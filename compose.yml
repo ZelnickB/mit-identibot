@@ -5,7 +5,8 @@ services:
       - ./:/data
     working_dir: /data
     command: "npm start"
-    depends_on: redis
+    depends_on:
+      - redis
   redis:
     image: docker.io/library/redis:latest
     volumes:
