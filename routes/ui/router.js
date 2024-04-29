@@ -99,7 +99,7 @@ router.get('/verification/confirmed', (req, res) => {
           res.render(path.resolve(__dirname, '..', '..', 'misc', 'error.hbs'), {
             errCode: '403',
             errDesc: 'Forbidden',
-            errExplanation: 'This Kerberos identity has already been used to verify a different Discord account.'
+            errExplanation: 'This Kerberos account has been blocked from being used for verification on this server.'
           })
         } else {
           if (kerbExists) {

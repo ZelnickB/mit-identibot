@@ -111,7 +111,7 @@ router.get('/verification/confirm', (req, res) => {
       responseType: 'json'
     }).then((discordResponse) => {
       redisClient.HGET('verification:map:kerberos,discord', touchstoneResponse.data.sub).then((value) => {
-        if (value !== discordResponse.data.id) {
+        if (value !== null && value !== discordResponse.data.id) {
           res.status(403)
           res.render(path.resolve(__dirname, '..', '..', 'misc', 'error.hbs'), {
             errCode: '403',
