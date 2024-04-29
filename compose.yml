@@ -1,0 +1,11 @@
+services:
+  server:
+    image: docker.io/library/node:current
+    volumes:
+      - ./:/data
+    working_dir: /data
+    command: "npm start"
+  redis:
+    image: docker.io/library/redis:latest
+    volumes:
+      - ./usr/redis:/data
