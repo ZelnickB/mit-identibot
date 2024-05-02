@@ -6,6 +6,9 @@ const router = express.Router()
 router.get('/', (req, res) => {
   res.redirect(302, '/verify')
 })
+router.get('/favicon.ico', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'static', 'favicon.ico'))
+})
 router.get('/verify', (req, res) => {
   res.redirect(302, '/ui/verification/touchstone')
 })
