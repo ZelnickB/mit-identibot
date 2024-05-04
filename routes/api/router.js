@@ -119,6 +119,22 @@ router.get('/verification/confirm', (req, res) => {
             errExplanation: 'This Kerberos identity has already been used to verify a different Discord account.'
           })
         } else {
+          try {
+            axios.get(`https://discord.com/api/v10/guilds/${preferences.discord.guild_id}/members/${discordResponse.data.id}`, {
+              headers: {
+                'User-Agent': 'DiscordBot (https://github.com/zelnickb/mit2028-discord-verifier, 0.1.0)',
+                Authorization: `Bot ${preferences.api_keys.discord.bot_token}`
+              }
+            })
+          } catch {
+            res.status(401)
+            res.render(path.resolve(__dirname, '..', '..', 'misc', 'error.hbs'), {
+              errCode: '401',
+              errDesc: 'Unauthorized',
+              errExplanation: `The Discord user ${discordResponse.data.username} was not found in the server. Verification has been aborted.`
+            })
+            return
+          }
           redisClient.SISMEMBER('verification:blacklist:kerberos', touchstoneResponse.data.sub).then((isBlacklisted) => {
             redisClient.HSET('verification:map:kerberos,discord', touchstoneResponse.data.sub, discordResponse.data.id).then(() => {
               return redisClient.HSET('verification:map:discord,kerberos', discordResponse.data.id, touchstoneResponse.data.sub)
