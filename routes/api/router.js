@@ -103,6 +103,14 @@ router.get('/verification/confirm', (req, res) => {
     },
     responseType: 'json'
   }).then((touchstoneResponse) => {
+    if (touchstoneResponse.data.affiliation !== 'student') {
+      res.status(403)
+      return res.render(path.resolve(__dirname, '..', '..', 'misc', 'error.hbs'), {
+        errCode: '403',
+        errDesc: 'Forbidden',
+        errExplanation: 'You cannot verify using a non-student Kerberos identity.'
+      })
+    }
     axios.get('https://discord.com/api/users/@me', {
       headers: {
         'User-Agent': 'DiscordBot (https://github.com/zelnickb/mit2028-discord-verifier, 0.1.0)',
@@ -161,9 +169,27 @@ router.get('/verification/confirm', (req, res) => {
                     Authorization: `Bot ${preferences.api_keys.discord.bot_token}`,
                     'X-Audit-Log-Reason': `User verified to control Kerberos identity ${touchstoneResponse.data.email}.`
                   }
-                }).then(
-                  () => {
-                    res.redirect(302, '/ui/verification/confirmed')
+                }).then(() => {
+                  return axios.get(`https://tlepeopledir.mit.edu/q/${touchstoneResponse.data.sub}@mit.edu`, {
+                    responseType: 'json'
+                  }
+                  )
+                }
+                ).then(
+                  (directoryResponse) => {
+                    if (directoryResponse.data.result[0] !== undefined && directoryResponse.data.result[0].student_year === undefined) {
+                      axios.put(`https://discord.com/api/v10/guilds/${preferences.discord.guild_id}/members/${discordResponse.data.id}/roles/${preferences.discord.c28_role_id}`, undefined, {
+                        headers: {
+                          'User-Agent': 'DiscordBot (https://github.com/zelnickb/mit2028-discord-verifier, 0.1.0)',
+                          Authorization: `Bot ${preferences.api_keys.discord.bot_token}`,
+                          'X-Audit-Log-Reason': 'User verified as student in MIT directory without class year (implies that student is \'28er).'
+                        }
+                      }).then(() => {
+                        res.redirect(302, '/ui/verification/confirmed?inclass=1')
+                      })
+                    } else {
+                      res.redirect(302, '/ui/verification/confirmed?inclass=0')
+                    }
                   },
                   () => {
                     res.status(401)
