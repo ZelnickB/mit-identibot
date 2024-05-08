@@ -178,7 +178,7 @@ router.get('/verification/confirm', (req, res) => {
                 ).then(
                   (directoryResponse) => {
                     if (directoryResponse.data.result[0] !== undefined && directoryResponse.data.result[0].student_year === undefined) {
-                      axios.put(`https://discord.com/api/v10/guilds/${preferences.discord.guild_id}/members/${discordResponse.data.id}/roles/${preferences.discord.c28_role_id}`, undefined, {
+                      axios.put(`https://discord.com/api/v10/guilds/${preferences.discord.guild_id}/members/${discordResponse.data.id}/roles/${preferences.discord.prefrosh_role_id}`, undefined, {
                         headers: {
                           'User-Agent': 'DiscordBot (https://github.com/zelnickb/mit2028-discord-verifier, 0.1.0)',
                           Authorization: `Bot ${preferences.api_keys.discord.bot_token}`,
@@ -188,7 +188,15 @@ router.get('/verification/confirm', (req, res) => {
                         res.redirect(302, '/ui/verification/confirmed?inclass=1')
                       })
                     } else {
-                      res.redirect(302, '/ui/verification/confirmed?inclass=0')
+                      axios.put(`https://discord.com/api/v10/guilds/${preferences.discord.guild_id}/members/${discordResponse.data.id}/roles/${preferences.discord.currentstudent_role_id}`, undefined, {
+                        headers: {
+                          'User-Agent': 'DiscordBot (https://github.com/zelnickb/mit2028-discord-verifier, 0.1.0)',
+                          Authorization: `Bot ${preferences.api_keys.discord.bot_token}`,
+                          'X-Audit-Log-Reason': `User verified as student in MIT directory, currently in year ${directoryResponse.data.result[0].student_year}.`
+                        }
+                      }).then(() => {
+                        res.redirect(302, '/ui/verification/confirmed?inclass=0')
+                      })
                     }
                   },
                   () => {
