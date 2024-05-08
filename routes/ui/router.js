@@ -103,7 +103,7 @@ router.get('/verification/confirmed', (req, res) => {
           })
         } else {
           if (kerbExists) {
-            if (parseInt(req.query.inClass) === 0) {
+            if (parseInt(req.query.inclass) === 0) {
               res.status(200).render(path.resolve(__dirname, 'templates', 'verification', 'confirmedOutsider.hbs'), {
                 preferences,
                 name: response.data.given_name

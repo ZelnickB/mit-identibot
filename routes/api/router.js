@@ -170,7 +170,7 @@ router.get('/verification/confirm', (req, res) => {
                     'X-Audit-Log-Reason': `User verified to control Kerberos identity ${touchstoneResponse.data.email}.`
                   }
                 }).then(() => {
-                  return axios.get(`https://tlepeopledir.mit.edu/q/${touchstoneResponse.data.sub}@mit.edu`, {
+                  return axios.get(`https://tlepeopledir.mit.edu/q/${touchstoneResponse.data.sub}`, {
                     responseType: 'json'
                   }
                   )
