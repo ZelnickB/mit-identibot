@@ -179,7 +179,7 @@ router.get('/verification/confirm', (req, res) => {
                         Authorization: `Bot ${preferences.api_keys.discord.bot_token}`,
                         'X-Audit-Log-Reason': `Verified Kerberos identity corresponds to user ${touchstoneResponse.data.name}; automatically updated nickname.`
                       }
-                    })
+                    }).then((r) => r, () => {})
                 }).then(() => {
                   return axios.get(`https://tlepeopledir.mit.edu/q/${touchstoneResponse.data.sub}`, {
                     responseType: 'json'
