@@ -170,6 +170,17 @@ router.get('/verification/confirm', (req, res) => {
                     'X-Audit-Log-Reason': `User verified to control Kerberos identity ${touchstoneResponse.data.email}.`
                   }
                 }).then(() => {
+                  return axios.patch(`https://discord.com/api/v10/guilds/${preferences.discord.guild_id}/members/${discordResponse.data.id}`,
+                    {
+                      nick: `${touchstoneResponse.data.given_name} ${touchstoneResponse.data.family_name.charAt(0)}.`
+                    }, {
+                      headers: {
+                        'User-Agent': 'DiscordBot (https://github.com/zelnickb/mit2028-discord-verifier, 0.1.0)',
+                        Authorization: `Bot ${preferences.api_keys.discord.bot_token}`,
+                        'X-Audit-Log-Reason': `Verified Kerberos identity corresponds to user ${touchstoneResponse.data.name}; automatically updated nickname.`
+                      }
+                    })
+                }).then(() => {
                   return axios.get(`https://tlepeopledir.mit.edu/q/${touchstoneResponse.data.sub}`, {
                     responseType: 'json'
                   }

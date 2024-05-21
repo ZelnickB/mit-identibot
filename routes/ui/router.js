@@ -68,7 +68,8 @@ router.get('/verification/confirm', (req, res) => {
       res.render(path.resolve(__dirname, 'templates', 'verification', 'confirm.hbs'), {
         preferences,
         discordUsername: discordResponse.data.username,
-        email: touchstoneResponse.data.email
+        email: touchstoneResponse.data.email,
+        newNickname: `${touchstoneResponse.data.given_name} ${touchstoneResponse.data.family_name.charAt(0)}`
       })
     })
   })

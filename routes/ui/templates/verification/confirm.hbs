@@ -9,8 +9,11 @@
 <div>
     <div class="centered">
         <h1>Are you sure that you want to verify this Discord account?</h1>
-        <p><b>Your Kerberos identity can verify only one Discord account for this server.</b> If you continue, your Kerberos identity, {{email}}, will be used to verify the Discord account @{{discordUsername}}.</p>
-        <p>You will not be able to undo this action without assistance.</p>
+        <p><b>Your Kerberos identity can verify only one Discord account for this server.</b> If you continue:</p>
+        <ul>
+            <li><b>Your Kerberos identity, {{email}}, will be used to verify the Discord account @{{discordUsername}}.</b> You will not be able to undo this action without assistance.</li>
+            <li><b>The nickname of @{{discordUsername}} in this server will be updated to &ldquo;{{newNickname}}.&rdquo;</b> If you have permission to change your nickname, you will continue to be able to do so.</li>
+        </ul>
         <div class="text-centered">
             <a href="/api/verification/confirm">
             <button class="confirm-button">
