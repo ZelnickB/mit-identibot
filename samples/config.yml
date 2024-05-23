@@ -1,0 +1,13 @@
+baseURL: "http://example.com"
+mongodb:
+  connection:
+    server: "localhost:27017"
+    username: "identibotUser" # Optional; omit if username/password authentication is not used.
+    urlExtra: ""
+    options: { }
+  dbName: "identibot"
+petrock:
+  clientID: "ABCDEFGHIJK"
+discord:
+  clientID: "12345678901234567890"
+singleServerMessages: false

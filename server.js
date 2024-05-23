@@ -1,15 +1,17 @@
-const http = require('http')
-const express = require('express')
-const cookieParser = require('cookie-parser')
+import * as path from 'path'
+import Express from 'express'
+import cookieParser from 'cookie-parser'
 
-const preferences = require('./library/preferences')
+import { initializeAll as initializeRoutes } from './lib/initializeRoutes.js'
 
-const app = express()
-
-app.set('view engine', require('hbs').__express)
-
+const app = Express()
 app.use(cookieParser())
 
-app.use('/', require('./routes/router'))
+app.set('view engine', 'hbs')
 
-http.createServer(app).listen(preferences.server.listen_at)
+app.get('/', (req, res) => {
+  return res.redirect(307, '/verify')
+})
+
+initializeRoutes(app, path.join(import.meta.dirname, 'routes'))
+  .then(() => app.listen(80))

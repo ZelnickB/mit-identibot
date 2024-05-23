@@ -1,35 +1,32 @@
 {
   "name": "mit-identibot",
-  "version": "0.0.0",
-  "description": "Service to verify users on MIT Discord servers.",
-  "main": "server.js",
+  "version": "1.0.0-dev",
+  "description": "An open-source Discord bot written in Node.js that verifies individuals' affiliations with MIT, grants them roles in a Discord server, and stores information about them in a database backend.",
+  "type": "module",
+  "packageManager": "pnpm@9.1.2",
   "scripts": {
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zelnickb/mit-identibot.git"
+    "url": "git+https://github.com/ZelnickB/mit-identibot.git"
   },
   "author": "Benjamin N. Zelnick",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/zelnickb/mit-identibot/issues"
+    "url": "https://github.com/ZelnickB/mit-identibot/issues"
   },
-  "homepage": "https://github.com/zelnickb/mit-identibot#readme",
+  "homepage": "https://github.com/ZelnickB/mit-identibot#readme",
   "dependencies": {
-    "axios": "^1.7.0",
     "cookie-parser": "^1.4.6",
+    "discord.js": "^14.15.2",
     "express": "^4.19.2",
     "hbs": "^4.2.0",
+    "mongodb": "^6.6.2",
     "openid-client": "^5.6.5",
-    "redis": "^4.6.13",
     "yaml": "^2.4.2"
   },
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-standard": "^17.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1"
+    "standard": "^17.1.0"
   }
 }

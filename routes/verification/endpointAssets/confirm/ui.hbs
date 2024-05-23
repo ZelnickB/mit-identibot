@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Verification - MIT IdentiBot</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+</head>
+<body>
+<div>
+    <div class="centered">
+        <h1>Are you sure that you want to verify this Discord account?</h1>
+        <p><b>Your Kerberos identity can verify only one Discord account{{messageVariables.discordAccountWhereAlt}}.</b> If you continue:</p>
+        <ul>
+            <li><b>Your Kerberos identity, {{petrockUserInfo.email}}, will be used to verify the Discord account @{{discordUserInfo.username}} in {{messageVariables.discordAccountWhere}}.</b> Right now, <i>you cannot undo this action without assistance</i>.</li>
+            <li><b>If IdentiBot has the appropriate permissions, the nickname of @{{discordUserInfo.username}} in {{messageVariables.discordAccountWhereSome}} will be updated to &ldquo;{{newServerNickname}}&rdquo;</b> You will still be able to change your nickname if you have permission to do so.</li>
+        </ul>
+        <div class="text-centered">
+            <a href="/api/verification/confirm">
+                <button class="confirm-button">
+                    Verify @{{discordUserInfo.username}}
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
