@@ -5,9 +5,11 @@ services:
       - ./identibot-config:/data/usr
     ports:
       - 127.0.0.1:80:80
+    restart: unless-stopped
   mongo:
     image: mongo:latest
     volumes:
       - db_storage:/data/db
+    restart: unless-stopped
 volumes:
   db_storage:
