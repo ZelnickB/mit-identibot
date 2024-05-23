@@ -1,0 +1,13 @@
+services:
+  identibot:
+    image: ghcr.io/zelnickb/mit-identibot:latest
+    volumes:
+      - ./identibot-config:/data/usr
+    ports:
+      - 127.0.0.1:80:80
+  mongo:
+    image: mongo:latest
+    volumes:
+      - db_storage:/data/db
+volumes:
+  db_storage:

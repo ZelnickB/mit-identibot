@@ -129,5 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# User-specific files
+# IntelliJ IDEA (WebStorm, etc.) user files
+.idea/
+
+# User files
 /usr/

@@ -1,0 +1,27 @@
+# Logs
+*.log
+
+# Dependency directories
+node_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# IntelliJ IDEA (WebStorm, etc.) user files
+.idea/
+
+# Git and GitHub files
+.gitignore
+.github/
+
+# Sample files
+/samples/
+
+# User files
+/usr/
