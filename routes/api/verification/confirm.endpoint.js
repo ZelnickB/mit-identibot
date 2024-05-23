@@ -1,15 +1,14 @@
 import { TokenSet } from 'openid-client'
-import { DBRef } from 'mongodb'
 import { discord, petrock } from '../../../lib/oauthClients.js'
 import { dbClient } from '../../../lib/mongoClient.js'
 import { decrypt } from '../../../lib/simpleCrypto.js'
-import { configDb, secretsSync } from '../../../lib/preferencesReader.js'
+import { configDb } from '../../../lib/preferencesReader.js'
 import { botHeaders, parseNickname } from '../../../lib/utils.js'
 
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 const oauthTokenCollections = {
   petrock: dbClient.collection('verification.oauthTokens.petrock'),
-  discord: dbClient.collection('verification.oauthTokens.discord'),
+  discord: dbClient.collection('verification.oauthTokens.discord')
 }
 
 export function get (req, res) {
