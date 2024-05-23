@@ -169,6 +169,18 @@ export function get (req, res) {
             }
           }
         )
+      } else if (directoryResponse.result[0] !== undefined) {
+        fetch(
+          // `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1218369208409395301`,
+          `https://discord.com/api/v10/guilds/1242990287752531980/members/${discordUserInfo.id}/roles/1234567890123456789`, // TESTING
+          {
+            method: 'PUT',
+            headers: {
+              ...botHeaders,
+              'X-Audit-Log-Reason': `User verified as student in MIT directory, currently in year ${directoryResponse.result[0].student_year}.`
+            }
+          }
+        )
       }
     })
     // END CLASS OF 2028 SERVER-SPECIFIC CODE
