@@ -1,8 +1,8 @@
 import path from 'path'
-import { petrock, discord } from '../../lib/oauthClients.js'
+import { petrock } from '../../lib/oauthClients.js'
 import { TokenSet } from 'openid-client'
 import { decrypt } from '../../lib/simpleCrypto.js'
-import * as utils from '../../lib/utils.js'
+import { configSync } from '../../lib/preferencesReader.js'
 
 export function get (req, res) {
   petrock.userinfo(
@@ -14,7 +14,10 @@ export function get (req, res) {
     )
   ).then((petrockUserInfo) => {
     res.status(200).render(path.resolve(import.meta.dirname, 'endpointAssets', 'confirmed', 'ui.hbs'), {
-      petrockUserInfo
+      petrockUserInfo,
+      messageVariables: {
+        whereServers: configSync().singleServerMessages ? 'this server' : 'all participating Discord servers'
+      }
     })
   })
 }
