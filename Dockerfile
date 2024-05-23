@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:current
 
 ENV NODE_ENV=production
 
