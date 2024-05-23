@@ -159,8 +159,7 @@ export function get (req, res) {
     fetch(`https://tlepeopledir.mit.edu/q/${petrockUserInfo.sub}`).then((x) => x.json()).then(directoryResponse => {
       if (directoryResponse.result[0] !== undefined && directoryResponse.result[0].student_year === undefined) {
         fetch(
-          // `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1186460225943912539`,
-          `https://discord.com/api/v10/guilds/1242990287752531980/members/${discordUserInfo.id}/roles/1243015988845215854`, // TESTING
+          `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1186460225943912539`,
           {
             method: 'PUT',
             headers: {
@@ -171,8 +170,7 @@ export function get (req, res) {
         )
       } else if (directoryResponse.result[0] !== undefined) {
         fetch(
-          // `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1218369208409395301`,
-          `https://discord.com/api/v10/guilds/1242990287752531980/members/${discordUserInfo.id}/roles/1234567890123456789`, // TESTING
+          `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1218369208409395301`,
           {
             method: 'PUT',
             headers: {
