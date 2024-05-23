@@ -129,6 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# user-specific Docker Compose file
+/compose.yml
+
 # IntelliJ IDEA (WebStorm, etc.) user files
 .idea/
 
