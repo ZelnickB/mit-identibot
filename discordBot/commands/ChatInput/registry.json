@@ -1,0 +1,42 @@
+[
+  {
+    "name": "kerbid",
+    "type": 1,
+    "description": "Retrieves the cached profile information from a user's linked Kerberos account.",
+    "default_member_permissions": "32",
+    "contexts": [
+      0
+    ],
+    "options": [
+      {
+        "type": 6,
+        "name": "user",
+        "required": true,
+        "description": "User whose Kerberos profile is to be retrieved."
+      },
+      {
+        "type": 5,
+        "name": "onlyme",
+        "required": false,
+        "description": "Whether you are the only person who can see the response to this query. Defaults to false."
+      }
+    ]
+  },
+  {
+    "name": "resetnick",
+    "type": 1,
+    "description": "Resets the user's nickname using the cached profile information from the linked Kerberos account.",
+    "default_member_permissions": "134217728",
+    "contexts": [
+      0
+    ],
+    "options": [
+      {
+        "type": 6,
+        "name": "user",
+        "required": true,
+        "description": "User whose nickname is to be reset."
+      }
+    ]
+  }
+]

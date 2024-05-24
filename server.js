@@ -13,5 +13,7 @@ app.get('/', (req, res) => {
   return res.redirect(307, '/verify')
 })
 
+import('./discordBot/initialize.js')
+
 initializeRoutes(app, path.join(import.meta.dirname, 'routes'))
   .then(() => app.listen(80))

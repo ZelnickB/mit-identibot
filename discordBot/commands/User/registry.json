@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Get Profile from Linked Kerberos",
+    "type": 2,
+    "default_member_permissions": "32",
+    "contexts": [
+      0
+    ]
+  },
+  {
+    "name": "Reset Nickname",
+    "type": 2,
+    "default_member_permissions": "134217728",
+    "contexts": [
+      0
+    ]
+  }
+]
