@@ -4,6 +4,7 @@ import { dbClient } from '../../../lib/mongoClient.js'
 import { decrypt } from '../../../lib/simpleCrypto.js'
 import { configDb } from '../../../lib/preferencesReader.js'
 import { botHeaders, parseNickname } from '../../../lib/utils.js'
+import { gateway } from '../../../lib/discordAPIClients.js'
 
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 const oauthTokenCollections = {
@@ -119,38 +120,30 @@ export function get (req, res) {
         continue
       }
       const serverConfig = serversDynamicConfig[serverID]
-      if (serverConfig.verification.allowedAffiliations.includes(petrockUserInfo.affiliation)) {
-        promises.push(
-          fetch(
-            `https://discord.com/api/v10/guilds/${serverID}/members/${discordUserInfo.id}/roles/${serverConfig.verification.verifiedRole}`,
-            {
-              method: 'PUT',
-              headers: {
-                ...botHeaders,
-                'X-Audit-Log-Reason': `User verified to control Kerberos identity ${petrockUserInfo.email}.`
-              }
-            }
+      promises.push(gateway.guilds.fetch(serverID).then((server) => {
+        const innerPromises = []
+        if (serverConfig.verification.allowedAffiliations.includes(petrockUserInfo.affiliation)) {
+          innerPromises.push(
+            server.members.fetch(discordUserInfo.id).then((member) => {
+              return member.roles.add(
+                serverConfig.verification.verifiedRole,
+                `User verified to control Kerberos identity ${petrockUserInfo.email}.`
+              )
+            })
           )
-        )
-        if (serverConfig.verification.autochangeNickname === true) {
-          promises.push(
-            fetch(
-              `https://discord.com/api/v10/guilds/${serverID}/members/${discordUserInfo.id}`,
-              {
-                body: JSON.stringify({
-                  nick: parseNickname(petrockUserInfo.given_name, petrockUserInfo.family_name)
-                }),
-                method: 'PATCH',
-                headers: {
-                  ...botHeaders,
-                  'Content-Type': 'application/json',
-                  'X-Audit-Log-Reason': `Automatically updated nickname to reflect name on record for user's verified Kerberos identity: ${petrockUserInfo.name}`
-                }
-              }
+          if (serverConfig.verification.autochangeNickname === true) {
+            innerPromises.push(
+              server.members.fetch(discordUserInfo.id).then((member) => {
+                return member.setNickname(
+                  parseNickname(petrockUserInfo.given_name, petrockUserInfo.family_name),
+                  `Automatically updated nickname to reflect name on record for user's verified Kerberos identity: ${petrockUserInfo.name}`
+                )
+              })
             )
-          )
+          }
+          return Promise.allSettled(innerPromises)
         }
-      }
+      }))
     }
     return Promise.allSettled(promises)
   }).then((val) => {
