@@ -11,7 +11,7 @@ export function get (req, res) {
         {
           sameSite: 'lax',
           path: '/',
-          maxAge: 3600000
+          maxAge: 21600000
         }
       )
       return res.redirect(302, '/verification/discord')
