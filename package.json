@@ -24,7 +24,7 @@
     "discord.js": "^14.15.2",
     "express": "^4.19.2",
     "hbs": "^4.2.0",
-    "mongodb": "^6.6.2",
+    "mongodb": "^6.7.0",
     "openid-client": "^5.6.5",
     "utf-8-validate": "^6.0.4",
     "yaml": "^2.4.3",
