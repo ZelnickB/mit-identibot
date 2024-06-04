@@ -32,7 +32,7 @@ export function get (req, res) {
   ]).then(([petrockUserInfo, discordUserInfo]) => {
     discordUserInfo = JSON.parse(discordUserInfo.body.toString('utf8'))
     return Promise.all([
-      Promise.resolve([petrockUserInfo, discordUserInfo]),
+      [petrockUserInfo, discordUserInfo],
       verificationUserInfoCollection.findOne(
         {
           'petrock.sub': petrockUserInfo.sub
@@ -46,10 +46,10 @@ export function get (req, res) {
         description: 'Unauthorized',
         explanation: 'This Kerberos identity has already been used to verify a Discord account.'
       })
-      return Promise.resolve(false)
+      return false
     }
     return Promise.all([
-      Promise.resolve([petrockUserInfo, discordUserInfo]),
+      [petrockUserInfo, discordUserInfo],
       oauthTokenCollections.petrock.updateOne(
         { _sub: petrockUserInfo.sub },
         {
@@ -77,11 +77,11 @@ export function get (req, res) {
     ])
   }).then((val) => {
     if (val === false) {
-      return Promise.resolve(false)
+      return false
     }
     const [petrockUserInfo, discordUserInfo] = val[0]
     return Promise.all([
-      Promise.resolve([petrockUserInfo, discordUserInfo]),
+      [petrockUserInfo, discordUserInfo],
       verificationUserInfoCollection.updateOne(
         {
           $or: [
@@ -102,19 +102,19 @@ export function get (req, res) {
     ])
   }).then((val) => {
     if (val === false) {
-      return Promise.resolve(false)
+      return false
     }
     return Promise.all([
-      Promise.resolve(val[0]),
+      val[0],
       configDb.getDocumentByName('servers')
     ])
   }).then((val) => {
     if (val === false) {
-      return Promise.resolve(false)
+      return false
     }
     const [petrockUserInfo, discordUserInfo] = val[0]
     const serversDynamicConfig = val[1]
-    const promises = [Promise.resolve(val[0])]
+    const promises = [val[0]]
     for (const serverID in serversDynamicConfig) {
       if (serverID.startsWith('_')) {
         continue
