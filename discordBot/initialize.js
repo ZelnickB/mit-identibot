@@ -1,4 +1,5 @@
 import * as path from 'path'
+import { promises as fs } from 'fs'
 import * as clients from '../lib/discordAPIClients.js'
 import { CommandSet } from './commands/manager.js'
 
@@ -19,4 +20,24 @@ await clients.rest.put(
 clients.gateway.on('interactionCreate', async interaction => {
   if (interaction.isChatInputCommand()) ChatInputCommandSet.autoRunCommand(interaction)
   else if (interaction.isUserContextMenuCommand()) UserCommandSet.autoRunCommand(interaction)
+})
+
+fs.readdir(path.join(import.meta.dirname, 'events'), { withFileTypes: true }).then(files => {
+  files = files
+    .filter(c => c.isFile() && c.name.endsWith('.js'))
+    .map((c) => path.join(c.parentPath, c.name))
+  const importPromises = []
+  const eventNames = []
+  for (const c of files) {
+    importPromises.push(import(c))
+    eventNames.push(path.parse(c).name)
+  }
+  return Promise.all([Promise.all(importPromises), eventNames])
+}).then(eventsAndHandlers => {
+  if (eventsAndHandlers[0].length !== eventsAndHandlers[1].length) {
+    throw new RangeError('Event name and handler module arrays have unequal lengths.')
+  }
+  for (let i = 0; i < eventsAndHandlers[0].length; i++) {
+    clients.gateway.on(eventsAndHandlers[1][i], eventsAndHandlers[0][i].default)
+  }
 })
