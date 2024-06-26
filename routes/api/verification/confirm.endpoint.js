@@ -147,6 +147,9 @@ export function get (req, res) {
     }
     return Promise.allSettled(promises)
   }).then((val) => {
+    if (val === false) {
+      return false
+    }
     const [petrockUserInfo, discordUserInfo] = val[0].value
     // BEGIN CLASS OF 2028 SERVER-SPECIFIC CODE
     fetch(`https://tlepeopledir.mit.edu/q/${petrockUserInfo.sub}`).then((x) => x.json()).then(directoryResponse => {
