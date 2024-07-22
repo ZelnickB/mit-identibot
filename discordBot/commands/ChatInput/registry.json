@@ -1,6 +1,6 @@
 [
   {
-    "name": "kerbid",
+    "name": "whois",
     "type": 1,
     "description": "Retrieves the cached profile information from a user's linked Kerberos account.",
     "default_member_permissions": "32",

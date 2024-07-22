@@ -1,4 +1,4 @@
-import { profileText } from '../../common/kerbid.js'
+import { profileText } from '../../common/whois.js'
 import { authorizeAndReply } from '../../serverAuthorization.js'
 
 export default async function (interaction) {
