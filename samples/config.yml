@@ -10,4 +10,9 @@ petrock:
   clientID: "ABCDEFGHIJK"
 discord:
   clientID: "12345678901234567890"
+emoji:
+  ci_h: "12345678901234567890"
+  ci_hw: "12345678901234567890"
+  graduate: "12345678901234567890"
+  undergraduate: "12345678901234567890"
 singleServerMessages: false
