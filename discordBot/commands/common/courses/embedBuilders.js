@@ -19,7 +19,6 @@ export function courseInformation (information) {
     offeredTimes.push('Summer')
   }
   const embedBuilder = new EmbedBuilder()
-    .setColor(0x750014)
     .setTitle(
       (
         'level' in information
@@ -71,6 +70,12 @@ export function courseInformation (information) {
     ])
   if ('url' in information) {
     embedBuilder.setURL(information.url)
+  }
+  if ('level' in information) {
+    if (information.level === 'U') embedBuilder.setColor(0x0080FF)
+    else embedBuilder.setColor(0x008040)
+  } else {
+    embedBuilder.setColor(0xFFFFFF)
   }
   return embedBuilder
 }
