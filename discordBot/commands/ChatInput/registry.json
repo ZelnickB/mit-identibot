@@ -30,6 +30,11 @@
     ]
   },
   {
+    "name": "ping",
+    "type": 1,
+    "description": "Checks whether IdentiBot is online and measures latency."
+  },
+  {
     "name": "searchdir",
     "type": 1,
     "description": "Performs a search in the public MIT directory.",
