@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 263 192.8">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient-3);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-3 {
+        fill: #828625;
+      }
+
+      .cls-4 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-5 {
+        fill: #b0d235;
+      }
+
+      .cls-6 {
+        fill: #f7941e;
+      }
+
+      .cls-7 {
+        fill: #bc3d19;
+      }
+
+      .cls-8 {
+        fill: #545b7b;
+      }
+
+      .cls-9 {
+        fill: #7cb5d8;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="862.5" y1="212.3" x2="863.3" y2="212.2" gradientTransform="translate(-278673.5 -267390) rotate(30) scale(434.9)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6d6e71"/>
+      <stop offset=".5" stop-color="#6d6e71" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#6d6e71" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="862.4" y1="212.4" x2="863.1" y2="212" gradientTransform="translate(-288387.6 -247055.7) rotate(26.8) scale(427.7)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6d6e71"/>
+      <stop offset=".5" stop-color="#6d6e71" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#6d6e71" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="862.3" y1="212.3" x2="863" y2="212.4" gradientTransform="translate(-288387.6 -247055.7) rotate(26.8) scale(427.7)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6d6e71"/>
+      <stop offset=".5" stop-color="#6d6e71" stop-opacity=".1"/>
+      <stop offset="1" stop-color="#6d6e71" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.6.0, SVG Export Plug-In . SVG Version: 1.2.0 Build 709)  -->
+  <g>
+    <g id="Layer_1">
+      <polygon class="cls-9" points="35.7 44.9 20.1 55.1 0 50.5 15.3 40.5 35.7 44.9"/>
+      <polygon class="cls-5" points="66.4 24.7 50.8 35 30.8 30.4 46.1 20.3 66.4 24.7"/>
+      <polygon class="cls-6" points="97.2 4.4 81.7 14.6 61.6 10 76.9 0 97.2 4.4"/>
+      <polygon class="cls-4" points="178.2 177.9 35.6 122.1 20.2 132.2 157.6 192.8 178.2 177.9"/>
+      <polygon class="cls-2" points="263 100.2 97.2 81.5 81.7 91.7 240.9 114.5 263 100.2"/>
+      <polygon class="cls-1" points="223.2 134.8 66.4 101.8 51 111.9 197.5 156.9 223.2 134.8"/>
+      <polygon class="cls-8" points="35.6 122.1 20.2 132.2 20.2 55.1 35.6 44.8 35.6 122.1"/>
+      <polygon class="cls-3" points="66.4 101.8 51 112 51 34.9 66.4 24.7 66.4 101.8"/>
+      <polygon class="cls-7" points="97.2 81.5 81.7 91.7 81.7 14.6 97.2 4.4 97.2 81.5"/>
+    </g>
+    <metadata>
+      <sfw xmlns="http://ns.adobe.com/SaveForWeb/1.0/">
+        <slices/>
+        <sliceSourceBounds x="2" y="2.2" width="263" height="192.8" bottomLeftOrigin="true"/>
+      </sfw>
+    </metadata>
+  </g>
+</svg>
