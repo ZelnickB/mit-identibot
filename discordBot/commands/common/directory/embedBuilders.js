@@ -48,7 +48,7 @@ export function directoryResult (detailSearchResult) {
       case 'Edgerton Center':
         department = `<:edgerton:${config.emoji.edgerton}> ` + department
         break
-      case 'Electrical Engineering & Computer Science':
+      case 'Electrical Engineering and Computer Science':
       case 'Dept of Electrical Engineering & Computer Science':
         department = `<:eecs:${config.emoji.eecs}> ` + department
         break
