@@ -13,6 +13,18 @@
     ]
   },
   {
+    "name": "localtime",
+    "type": 1,
+    "description": "Gets the local time at MIT (default) or in another specified time zone.",
+    "options": [
+      {
+        "type": 3,
+        "name": "timezone",
+        "description": "The time zone to use, in UTC offset or IANA format. Defaults to MIT's time zone."
+      }
+    ]
+  },
+  {
     "name": "resetnick",
     "type": 1,
     "description": "Resets the user's nickname using the cached profile information from the linked Kerberos account.",
