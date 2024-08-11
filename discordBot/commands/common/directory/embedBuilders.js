@@ -1,3 +1,5 @@
+import { createHash } from 'crypto'
+
 import { EmbedBuilder } from 'discord.js'
 import { config as configReader } from '../../../../lib/preferencesReader.js'
 import { dbClient } from '../../../../lib/mongoClient.js'
@@ -137,5 +139,12 @@ export async function directoryResult (detailSearchResult) {
       }])
     })
   }
+  const gravatarURL = 'https://gravatar.com/avatar/' +
+    createHash('sha256').update(email.trim().toLowerCase()).digest('hex')
+  await fetch(`${gravatarURL}?d=404`, { method: 'HEAD' }).then(res => {
+    if (res.ok) {
+      embedBuilder.setThumbnail(`${gravatarURL}?s=1024`)
+    }
+  })
   return embedBuilder
 }
