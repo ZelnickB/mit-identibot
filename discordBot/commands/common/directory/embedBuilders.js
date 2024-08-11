@@ -1,9 +1,11 @@
 import { EmbedBuilder } from 'discord.js'
 import { config as configReader } from '../../../../lib/preferencesReader.js'
+import { dbClient } from '../../../../lib/mongoClient.js'
 
 const config = await configReader()
+const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 
-export function directoryResult (detailSearchResult) {
+export async function directoryResult (detailSearchResult) {
   const embedBuilder = new EmbedBuilder()
     .setColor(0x750014)
     .setTitle(detailSearchResult.search.name)
@@ -94,9 +96,10 @@ export function directoryResult (detailSearchResult) {
       inline: true
     }])
   }
+  const email = `${detailSearchResult.search.email_id}@${detailSearchResult.search.email_domain}`
   embedBuilder.addFields([{
     name: 'Email',
-    value: `\`${detailSearchResult.search.email_id}@${detailSearchResult.search.email_domain}\``,
+    value: `\`${email}\``,
     inline: true
   }])
   if (detailDefined && 'phone' in detailSearchResult.detail) {
@@ -115,6 +118,24 @@ export function directoryResult (detailSearchResult) {
   }
   if (detailDefined && 'url' in detailSearchResult.detail) {
     embedBuilder.setURL(detailSearchResult.detail.url)
+  }
+  if (config.commandSettings.directory.enableAccountLinkStatusInDirectorySearch) {
+    await verificationUserInfoCollection.findOne(
+      {
+        'petrock.email': email
+      }
+    ).then(doc => {
+      if (doc === null) {
+        return `<:no_discord:${config.emoji.no_discord}> No Discord account linked`
+      } else {
+        return `<:discord:${config.emoji.discord}> Discord account linked`
+      }
+    }).then(val => {
+      embedBuilder.addFields([{
+        name: 'IdentiBot Connection',
+        value: val
+      }])
+    })
   }
   return embedBuilder
 }

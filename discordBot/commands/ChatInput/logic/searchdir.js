@@ -5,7 +5,7 @@ export default async function (interaction) {
   try {
     const result = await detailSearch(interaction.options.get('query').value)
     interaction.reply({
-      embeds: [directoryResult(result)]
+      embeds: [await directoryResult(result)]
     })
   } catch (e) {
     if (e instanceof NoDirectoryResultsError) {
