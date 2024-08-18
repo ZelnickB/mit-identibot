@@ -7,6 +7,22 @@ import { dbClient } from '../../../../lib/mongoClient.js'
 const config = await configReader()
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 
+export async function directoryResultList (searchResult, query) {
+  const embedBuilder = new EmbedBuilder()
+    .setColor(0x750014)
+    .setTitle('Directory Search Results')
+    .setDescription(`Multiple results were found for the query \`${query}\`. To get detailed information, use a more specific query.\n*${searchResult.length} results${searchResult.length > 25
+      ? '; 25 shown'
+      : ''}*`)
+  for (let i = 0; i < Math.min(searchResult.length, 25); i++) {
+    embedBuilder.addFields([{
+      name: searchResult[i].name,
+      value: `${searchResult[i].email_id}@${searchResult[i].email_domain}`
+    }])
+  }
+  return embedBuilder
+}
+
 export async function directoryResult (detailSearchResult) {
   const embedBuilder = new EmbedBuilder()
     .setColor(0x750014)

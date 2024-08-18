@@ -7,6 +7,14 @@ export class NoDirectoryResultsError extends Error {
   }
 }
 
+export class MultipleDirectoryResultsError extends Error {
+  constructor (query, results) {
+    super(`Multiple results in directory for "${query}."`)
+    this.name = this.constructor.name
+    this.results = results
+  }
+}
+
 export async function directorySearch (query) {
   return fetch(`https://tlepeopledir.mit.edu/q/${query}`).then(res => {
     if (!res.ok) {
@@ -29,15 +37,21 @@ export async function directoryDetail (emailAddress, emailDomain) {
   )
 }
 
-export async function detailSearch (query) {
+export async function detailSearch (query, retrieveAll = false) {
   const searchResult = await directorySearch(query)
-  if (searchResult.length > 0) {
-    const detailResult = await directoryDetail(searchResult[0].email_id, searchResult[0].email_domain)
-    return {
-      search: searchResult[0],
-      detail: detailResult[0]
-    }
-  } else {
+  if (searchResult.length === 0) {
     return Promise.reject(new NoDirectoryResultsError(query))
   }
+  if (searchResult.length > 1 && !retrieveAll) {
+    return Promise.reject(new MultipleDirectoryResultsError(query, searchResult))
+  }
+  const results = []
+  for (const r of searchResult) {
+    const detailResult = await directoryDetail(r.email_id, r.email_domain)
+    results.push({
+      search: r,
+      detail: detailResult[0]
+    })
+  }
+  return results
 }
