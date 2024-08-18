@@ -4,6 +4,41 @@ import { boolToYesNo } from '../../../../lib/utils.js'
 
 const config = await configReader()
 
+export function departmentInformation (prefix, information) {
+  const embedBuilder = new EmbedBuilder()
+    .setTitle(
+      (
+        'emojiName' in information
+          ? `<:${information.emojiName}:${config.emoji[information.emojiName]}> `
+          : ''
+      ) + information.name
+    )
+    .setColor(0x808080)
+    .setURL(`https://catalog.mit.edu/subjects/${prefix.toString().toLowerCase()}/`)
+    .addFields([
+      {
+        name: 'Course Prefix',
+        value: prefix,
+        inline: true
+      }
+    ])
+  if ('abbreviation' in information && information.abbreviation !== prefix) {
+    embedBuilder.addFields([{
+      name: 'Abbreviation',
+      value: information.abbreviation,
+      inline: true
+    }])
+  }
+  if ('website' in information) {
+    embedBuilder.addFields([{
+      name: 'Website',
+      value: `[${URL.parse(information.website).host}](${information.website})`,
+      inline: true
+    }])
+  }
+  return embedBuilder
+}
+
 export function courseInformation (information) {
   const offeredTimes = []
   if (information.offered_fall) {

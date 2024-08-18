@@ -1,3 +1,5 @@
+import { promises as fs } from 'fs'
+import * as path from 'path'
 import { BadGatewayError } from '../../../lib/errors.js'
 
 export class CourseNotFoundError extends Error {
@@ -18,3 +20,5 @@ export async function courseInformation (id) {
     return res.json()
   })
 }
+
+export const departmentInformation = JSON.parse(await fs.readFile(path.resolve(import.meta.dirname, './departmentInfo.json'), 'utf8'))

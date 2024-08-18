@@ -1,0 +1,228 @@
+{
+  "1": {
+    "name": "Civil and Environmental Engineering",
+    "abbreviation": "CEE",
+    "website": "https://cee.mit.edu/",
+    "emojiName": "cee"
+  },
+  "2": {
+    "name": "Mechanical Engineering",
+    "abbreviation": "MechE",
+    "website": "https://meche.mit.edu/",
+    "emojiName": "meche"
+  },
+  "3": {
+    "name": "Materials Science and Engineering",
+    "abbreviation": "DMSE",
+    "website": "https://dmse.mit.edu/",
+    "emojiName": "dmse"
+  },
+  "4": {
+    "name": "Architecture",
+    "website": "https://architecture.mit.edu/"
+  },
+  "5": {
+    "name": "Chemistry",
+    "website": "https://chemistry.mit.edu/"
+  },
+  "6": {
+    "name": "Electrical Engineering and Computer Science",
+    "abbreviation": "EECS",
+    "website": "https://www.eecs.mit.edu/",
+    "emojiName": "eecs"
+  },
+  "7": {
+    "name": "Biology",
+    "website": "https://biology.mit.edu/"
+  },
+  "8": {
+    "name": "Physics",
+    "website": "https://physics.mit.edu/",
+    "emojiName": "physics"
+  },
+  "9": {
+    "name": "Brain and Cognitive Sciences",
+    "abbreviation": "BCS",
+    "website": "https://bcs.mit.edu",
+    "emojiName": "bcs"
+  },
+  "10": {
+    "name": "Chemical Engineering",
+    "abbreviation": "ChemE",
+    "website": "https://cheme.mit.edu/"
+  },
+  "11": {
+    "name": "Urban Studies and Planning",
+    "abbreviation": "DUSP",
+    "website": "https://dusp.mit.edu/",
+    "emojiName": "dusp"
+  },
+  "12": {
+    "name": "Earth, Atmospheric, and Planetary Sciences",
+    "abbreviation": "EAPS",
+    "website": "https://eaps.mit.edu/"
+  },
+  "14": {
+    "name": "Economics",
+    "website": "https://economics.mit.edu/"
+  },
+  "15": {
+    "name": "Management",
+    "website": "https://mitsloan.mit.edu/"
+  },
+  "16": {
+    "name": "Aeronautics and Astronautics",
+    "abbreviation": "AeroAstro",
+    "website": "https://aeroastro.mit.edu/",
+    "emojiName": "aeroastro"
+  },
+  "17": {
+    "name": "Political Science",
+    "website": "https://polisci.mit.edu/"
+  },
+  "18": {
+    "name": "Mathematics",
+    "website": "https://math.mit.edu/"
+  },
+  "20": {
+    "name": "Biological Engineering",
+    "abbreviation": "BE",
+    "website": "https://be.mit.edu/"
+  },
+  "21": {
+    "name": "Humanities",
+    "website": "https://shass.mit.edu/"
+  },
+  "21A": {
+    "name": "Anthropology",
+    "parent": "Humanities",
+    "website": "https://anthropology.mit.edu/"
+  },
+  "21H": {
+    "name": "History",
+    "parent": "Humanities",
+    "website": "https://history.mit.edu/"
+  },
+  "21G": {
+    "name": "Global Languages",
+    "parent": "Humanities",
+    "website": "https://languages.mit.edu/"
+  },
+  "21L": {
+    "name": "Literature",
+    "abbreviation": "Lit",
+    "parent": "Humanities",
+    "website": "https://literature.mit.edu/"
+  },
+  "21M": {
+    "name": "Music",
+    "parent": "Humanities",
+    "website": "https://mta.mit.edu/",
+    "emojiName": "mta"
+  },
+  "21T": {
+    "name": "Theater",
+    "parent": "Humanities",
+    "website": "https://mta.mit.edu/",
+    "emojiName": "mta"
+  },
+  "21W": {
+    "name": "Writing",
+    "parent": "Humanities",
+    "website": "https://cmsw.mit.edu/",
+    "emojiName": "cmsw"
+  },
+  "22": {
+    "name": "Nuclear Science and Engineering",
+    "abbreviation": "NSE",
+    "website": "https://web.mit.edu/nse/"
+  },
+  "24": {
+    "name": "Linguistics and Philosophy"
+  },
+  "AS": {
+    "name": "Aerospace Studies",
+    "abbreviation": "AS"
+  },
+  "CC": {
+    "name": "Concourse",
+    "website": "http://concourse.mit.edu/"
+  },
+  "CMS": {
+    "name": "Comparative Media Studies",
+    "abbreviation": "CMS",
+    "website": "https://cms.mit.edu/",
+    "emojiName": "cms"
+  },
+  "CSB": {
+    "name": "Computational and Systems Biology",
+    "abbreviation": "CSB",
+    "website": "https://csbphd.mit.edu/",
+    "emojiName": "csb"
+  },
+  "CSE": {
+    "name": "Computational Science and Engineering",
+    "abbreviation": "CCSE",
+    "website": "https://cse.mit.edu/",
+    "emojiName": "ccse"
+  },
+  "EC": {
+    "name": "Edgerton Center",
+    "website": "https://edgerton.mit.edu/",
+    "emojiName": "edgerton"
+  },
+  "EM": {
+    "name": "Engineering Management",
+    "abbreviation": "SDM",
+    "website": "https://sdm.mit.edu/"
+  },
+  "ES": {
+    "name": "Experimental Study Group",
+    "abbreviation": "ESG",
+    "website": "https://esg.mit.edu/",
+    "emojiName": "esg"
+  },
+  "HST": {
+    "name": "Health Sciences and Technology",
+    "abbreviation": "HST",
+    "website": "https://hst.mit.edu/",
+    "emojiName": "hst"
+  },
+  "IDS": {
+    "name": "Data, Systems, and Society",
+    "abbreviation": "IDSS",
+    "website": "https://idss.mit.edu/",
+    "emojiName": "idss"
+  },
+  "MAS": {
+    "name": "Media Arts and Sciences",
+    "website": "https://www.media.mit.edu/",
+    "emojiName": "medialab"
+  },
+  "MS": {
+    "name": "Military Science"
+  },
+  "NS": {
+    "name": "Naval Science"
+  },
+  "SCM": {
+    "name": "Supply Chain Management",
+    "abbreviation": "SCM",
+    "website": "https://scm.mit.edu/",
+    "emojiName": "scm"
+  },
+  "SP": {
+    "name": "Special Programs"
+  },
+  "STS": {
+    "name": "Science, Technology, and Society",
+    "abbreviation": "STS",
+    "website": "https://sts-program.mit.edu/"
+  },
+  "WGS": {
+    "name": "Women's and Gender Studies",
+    "abbreviation": "WGS",
+    "website": "https://wgs.mit.edu",
+    "emojiName": "wgs"
+  }
+}
