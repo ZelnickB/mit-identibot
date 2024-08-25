@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 import { petrock } from '../../lib/oauthClients.js'
 import { configSync } from '../../lib/preferencesReader.js'
 

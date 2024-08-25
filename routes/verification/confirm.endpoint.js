@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 import { petrock, discord } from '../../lib/oauthClients.js'
 import { TokenSet } from 'openid-client'
 import { decrypt } from '../../lib/simpleCrypto.js'

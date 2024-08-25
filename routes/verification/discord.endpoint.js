@@ -1,4 +1,4 @@
-import path from 'path'
+import * as path from 'path'
 import { TokenSet } from 'openid-client'
 import { petrock, discord } from '../../lib/oauthClients.js'
 import { configSync } from '../../lib/preferencesReader.js'
