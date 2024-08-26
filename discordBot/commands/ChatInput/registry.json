@@ -1,5 +1,18 @@
 [
   {
+    "name": "buildinginfo",
+    "type": 1,
+    "description": "Looks up information about an MIT building.",
+    "options": [
+      {
+        "type": 3,
+        "name": "query",
+        "required": true,
+        "description": "Query (e.g., building name or number) to search in the building directory."
+      }
+    ]
+  },
+  {
     "name": "courseinfo",
     "type": 1,
     "description": "Looks up a course in the MIT course catalog by subject ID.",
