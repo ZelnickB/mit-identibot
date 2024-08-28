@@ -7,7 +7,7 @@ import { EmbedBuilder } from 'discord.js'
 export function buildingInfo (info) {
   const embedBuilder = new EmbedBuilder()
   if ('name' in info) {
-    embedBuilder.setTitle(info.name + ('bldgnum' in info && info.name.includes(`(${info.bldgnum})`) ? '' : ` (${info.bldgnum})`))
+    embedBuilder.setTitle(info.name + ('bldgnum' in info && (info.name.includes(`(${info.bldgnum})`) || info.name === info.bldgnum) ? '' : ` (${info.bldgnum})`))
   } else if ('bldgnum' in info) embedBuilder.setTitle(info.bldgnum)
   else embedBuilder.setTitle('Building Information')
   if ('bldgimg' in info) embedBuilder.setThumbnail(info.bldgimg)
