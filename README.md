@@ -15,14 +15,16 @@ them roles in a Discord server, and stores information about them in a database 
 
 ```json
 {
-  _name: "servers",
-  "<SERVER/GUILD ID>": {
-    "verification": {
-      "verifiedRole": "<ID OF ROLE TO ASSIGN TO USERS ONCE THEIR KERBEROS IDENTITY IS VERIFIED>",
-       "autochangeNickname": true,
-      "allowedAffiliations": [
-        "<ALLOWED AFFILIATIONS TO VERIFY A USER FOR THIS SERVER (one or more of 'student', 'faculty', 'staff', 'affiliate')>"
-      ]
+  "_name": "servers",
+  "data": {
+    "<SERVER/GUILD ID>": {
+      "verification": {
+        "verifiedRole": "<ID OF ROLE TO ASSIGN TO USERS ONCE THEIR KERBEROS IDENTITY IS VERIFIED>",
+        "autochangeNickname": true,
+        "allowedAffiliations": [
+          "<ALLOWED AFFILIATIONS TO VERIFY A USER FOR THIS SERVER (one or more of 'student', 'faculty', 'staff', 'affiliate')>"
+        ]
+      }
     }
   }
 }
