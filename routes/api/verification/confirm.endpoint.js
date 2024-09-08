@@ -153,14 +153,14 @@ export function get (req, res) {
     const [petrockUserInfo, discordUserInfo] = val[0].value
     // BEGIN CLASS OF 2028 SERVER-SPECIFIC CODE
     fetch(`https://tlepeopledir.mit.edu/q/${petrockUserInfo.sub}`).then((x) => x.json()).then(directoryResponse => {
-      if (directoryResponse.result[0] !== undefined && directoryResponse.result[0].student_year === undefined) {
+      if (directoryResponse.result[0] !== undefined && directoryResponse.result[0].student_year === 1) {
         fetch(
           `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1186460225943912539`,
           {
             method: 'PUT',
             headers: {
               ...botHeaders,
-              'X-Audit-Log-Reason': 'User verified as student in MIT directory without class year (implies that student is \'28er).'
+              'X-Audit-Log-Reason': 'User verified as year 1 student in MIT directory.'
             }
           }
         )
