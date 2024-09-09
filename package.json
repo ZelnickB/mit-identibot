@@ -21,7 +21,7 @@
     "bufferutil": "^4.0.8",
     "cookie-parser": "^1.4.6",
     "discord-api-types": "^0.37.98",
-    "discord.js": "^14.15.3",
+    "discord.js": "^14.16.1",
     "express": "^4.19.2",
     "hbs": "^4.2.0",
     "luxon": "^3.5.0",
