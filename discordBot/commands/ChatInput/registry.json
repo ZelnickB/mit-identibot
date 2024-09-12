@@ -73,6 +73,11 @@
     ]
   },
   {
+    "name": "sipbdoor",
+    "type": 1,
+    "description": "Determines whether the SIPB office is open or closed."
+  },
+  {
     "name": "whois",
     "type": 1,
     "description": "Retrieves the cached profile information from a user's linked Kerberos account.",
