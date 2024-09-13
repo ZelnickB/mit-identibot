@@ -19,7 +19,7 @@ export default async function (interaction) {
     .setFields([
       {
         name: 'Status',
-        value: sipbDoorResponse.open ? ':unlock:' : ':lock:' + ' ' + sipbDoorResponse.status,
+        value: (sipbDoorResponse.open ? ':unlock:' : ':lock:') + ' ' + sipbDoorResponse.status,
         inline: true
       },
       {
