@@ -41,7 +41,7 @@ export async function whoisResult (discordID, userInfo) {
       inline: true
     })
     for (const department of userInfo.affiliations[0].departments) {
-      departmentNames.push(department)
+      departmentNames.push(department.name)
     }
     positionTitle = userInfo.affiliations[0].title
     officeLocation = userInfo.affiliations[0].office

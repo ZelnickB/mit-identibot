@@ -17,13 +17,13 @@ export async function getKerberos (user) {
     }
   ).then((doc) => {
     if (doc === null) {
-      throw UnlinkedUserError(user.id)
+      return Promise.reject(new UnlinkedUserError(user.id))
     } else {
-      return doc.petrock.email
+      return doc.petrock.email.replace(/@mit\.edu/gi, '')
     }
   })
 }
 
 export async function getUserInfo (user) {
-  return getByKerberos(await getKerberos(user.id))
+  return getByKerberos(await getKerberos(user))
 }

@@ -5,7 +5,7 @@ import { whoisResult } from '../../common/whois/embedBuilders.js'
 export default async function (interaction) {
   if (!await authorizeAndReply(interaction)) return
   try {
-    const embed = await (whoisResult(interaction.options.get('user').user.id, getUserInfo(interaction.options.get('user').user)))
+    const embed = await whoisResult(interaction.options.get('user').user.id, await getUserInfo(interaction.options.get('user').user))
     interaction.reply({
       embeds: [embed],
       allowedMentions: {
