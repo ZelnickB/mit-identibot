@@ -8,6 +8,8 @@ mongodb:
   dbName: "identibot"
 petrock:
   clientID: "ABCDEFGHIJK"
+mitDeveloperConnection:
+  clientID: "0123456789"
 discord:
   clientID: "12345678901234567890"
 commandSettings:
