@@ -23,7 +23,7 @@ export async function whoisResult (discordID, userInfo) {
       },
       {
         name: 'Email/Kerberos',
-        value: `${userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.kerberosId.replaceAll('_', '\\_')}\`)`
+        value: `${userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.kerberosId}\`)`
       }
     )
   if (userInfo.phoneNumber) {
