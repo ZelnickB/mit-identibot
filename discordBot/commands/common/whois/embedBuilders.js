@@ -23,7 +23,7 @@ export async function whoisResult (discordID, userInfo) {
       },
       {
         name: 'Email/Kerberos',
-        value: `${userInfo.email} (\`${userInfo.kerberosId}\`)`
+        value: `${userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.kerberosId.replaceAll('_', '\\_')}\`)`
       }
     )
   if (userInfo.phoneNumber) {
@@ -35,13 +35,16 @@ export async function whoisResult (discordID, userInfo) {
   let positionTitle, officeLocation
   const departmentNames = []
   if (userInfo.affiliations.length > 0) {
+    const affiliationType = userInfo.affiliations[0].type
     embedBuilder.addFields({
       name: 'Affiliation Type',
-      value: userInfo.affiliations[0].type,
+      value: affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
       inline: true
     })
-    for (const department of userInfo.affiliations[0].departments) {
-      departmentNames.push(department.name)
+    if ('departments' in userInfo.affiliations[0]) {
+      for (const department of userInfo.affiliations[0].departments) {
+        departmentNames.push(department.name)
+      }
     }
     positionTitle = userInfo.affiliations[0].title
     officeLocation = userInfo.affiliations[0].office
