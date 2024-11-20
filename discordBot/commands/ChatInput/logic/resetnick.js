@@ -1,8 +1,8 @@
 import { getNewNickname } from '../../common/resetnick.js'
-import { authorizeAndReply } from '../../serverAuthorization.js'
+import { authorizeServerAndReply } from '../../authorization.js'
 
 export default async function (interaction) {
-  if (!await authorizeAndReply(interaction)) return
+  if (!await authorizeServerAndReply(interaction)) return
   const targetUser = interaction.options.get('user').user
   const newNickname = await getNewNickname(targetUser)
   if (newNickname === false) {

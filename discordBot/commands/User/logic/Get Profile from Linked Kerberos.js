@@ -1,9 +1,9 @@
-import { authorizeAndReply } from '../../serverAuthorization.js'
 import { getUserInfo, UnlinkedUserError } from '../../common/whois/retrievers.js'
+import { authorizeServerAndReply, checkUserVerificationAndReply } from '../../authorization.js'
 import { whoisResult } from '../../common/whois/embedBuilders.js'
 
 export default async function (interaction) {
-  if (!await authorizeAndReply(interaction)) return
+  if (!(await authorizeServerAndReply(interaction) && await checkUserVerificationAndReply(interaction))) return
   try {
     const embed = await whoisResult(interaction.options.get('user').user.id, await getUserInfo(interaction.options.get('user').user))
     interaction.reply({
