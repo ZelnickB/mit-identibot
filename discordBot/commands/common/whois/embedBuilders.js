@@ -7,6 +7,7 @@ const verificationUserInfoCollection = dbClient.collection('verification.userInf
 
 export async function whoisResult (discordID, userInfo) {
   let affiliationColorCode
+  let affiliationEmoji = ' '
   const embedBuilder = new EmbedBuilder()
     .setTitle('Verified User Information')
     .setDescription(`The Discord user <@${discordID}> has been identified as the following individual.`)
@@ -37,11 +38,6 @@ export async function whoisResult (discordID, userInfo) {
   let affiliationType
   if (userInfo.affiliations.length > 0) {
     affiliationType = userInfo.affiliations[0].type
-    embedBuilder.addFields({
-      name: 'Affiliation Type',
-      value: affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
-      inline: true
-    })
     if ('departments' in userInfo.affiliations[0]) {
       for (const department of userInfo.affiliations[0].departments) {
         departmentNames.push(department.name)
@@ -52,20 +48,29 @@ export async function whoisResult (discordID, userInfo) {
     switch (userInfo.affiliations[0].type) {
       case 'faculty':
         affiliationColorCode = 0x8800FF
+        affiliationEmoji = `<:faculty:${config.emoji.faculty}> `
         break
       case 'staff':
         affiliationColorCode = 0x00CCFF
+        affiliationEmoji = `<:staff:${config.emoji.staff}> `
         break
       case 'affiliate':
         affiliationColorCode = 0xFFD900
+        affiliationEmoji = `<:affiliate:${config.emoji.affiliate}> `
         break
       case 'student':
         affiliationColorCode = 0x88FF00
+        affiliationEmoji = `<:student:${config.emoji.student}> `
         break
       default:
         affiliationColorCode = 0xFFFFFF
         break
     }
+    embedBuilder.addFields({
+      name: 'Affiliation Type',
+      value: affiliationEmoji + affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
+      inline: true
+    })
   } else affiliationColorCode = 0xFFFFFF
   if (positionTitle) {
     embedBuilder.addFields({

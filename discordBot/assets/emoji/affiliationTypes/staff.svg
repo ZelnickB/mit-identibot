@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 250 250">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        mask: url(#mask);
+      }
+
+      .st1 {
+        filter: url(#luminosity-invert-noclip);
+      }
+
+      .st2 {
+        fill: #fff;
+      }
+
+      .st3 {
+        fill: #0080ff;
+      }
+    </style>
+    <filter id="luminosity-invert-noclip" x="0" y="0" width="250" height="250" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
+      <feFlood flood-color="#fff" result="bg"/>
+      <feBlend in="cm" in2="bg"/>
+    </filter>
+    <mask id="mask" x="0" y="0" width="250" height="250" maskUnits="userSpaceOnUse">
+      <g class="st1">
+        <g>
+          <path class="st2" d="M137.5,134.9c0,4.6-3.7,8.3-8.3,8.3h-8.3c-4.6,0-8.3-3.7-8.3-8.3v-4.2H41.9v58.2c0,4.6,3.7,8.3,8.3,8.3h149.6c4.6,0,8.3-3.7,8.3-8.3v-58.2h-70.7v4.2Z"/>
+          <path class="st2" d="M199.8,80.8h-41.6v-13.5c0-8.1-6.4-14.5-14.5-14.5h-37.4c-8.1,0-14.5,6.4-14.5,14.5v13.5h-41.6c-4.6,0-8.3,3.7-8.3,8.3v33.3h70.7v-4.2h24.9v4.2h70.7v-33.3c0-4.6-3.7-8.3-8.3-8.3M104.2,80.8v-13.5c0-1.2.8-2.1,2.1-2.1h37.4c1.2,0,2.1.8,2.1,2.1v13.5h-41.6Z"/>
+        </g>
+      </g>
+    </mask>
+  </defs>
+  <g class="st0">
+    <rect class="st3" width="250" height="250" rx="20" ry="20"/>
+  </g>
+</svg>
