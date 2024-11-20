@@ -34,8 +34,9 @@ export async function whoisResult (discordID, userInfo) {
   }
   let positionTitle, officeLocation
   const departmentNames = []
+  let affiliationType
   if (userInfo.affiliations.length > 0) {
-    const affiliationType = userInfo.affiliations[0].type
+    affiliationType = userInfo.affiliations[0].type
     embedBuilder.addFields({
       name: 'Affiliation Type',
       value: affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
@@ -77,6 +78,19 @@ export async function whoisResult (discordID, userInfo) {
     embedBuilder.addFields({
       name: 'Departments',
       value: departmentNames.join(', '),
+      inline: true
+    })
+  }
+  if (affiliationType === 'student') {
+    let classYear = userInfo.affiliations[0].classYear
+    if (classYear === 'G') {
+      classYear = 'Graduate Student'
+    } else {
+      classYear = 'Year ' + classYear
+    }
+    embedBuilder.addFields({
+      name: 'Class Year',
+      value: classYear,
       inline: true
     })
   }
