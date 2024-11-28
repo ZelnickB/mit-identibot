@@ -9,28 +9,24 @@ them roles in a Discord server, and stores information about them in a database 
 
 ### Setting up the MongoDB Database
 
-1. Create the `config` collection, which is where IdentiBot stores settings that require storage in a database. Create
-   one document with each of the following `_name` attributes:
-    * `servers`, which is formatted as follows:
-
+1. Create the `config.servers` collection, which is where IdentiBot stores settings for individual servers. Create
+   documents with the following format:
 ```json
 {
-  "_name": "servers",
-  "data": {
-    "<SERVER/GUILD ID>": {
-      "verification": {
-        "verifiedRole": "<ID OF ROLE TO ASSIGN TO USERS ONCE THEIR KERBEROS IDENTITY IS VERIFIED>",
-        "autochangeNickname": true,
-        "allowedAffiliations": [
-          "<ALLOWED AFFILIATIONS TO VERIFY A USER FOR THIS SERVER (one or more of 'student', 'faculty', 'staff', 'affiliate')>"
-        ]
-      }
-    }
-  }
+   "_name": "servers", 
+   "_serverId": "<SERVER/GUILD ID>",
+   "authorized": true,
+   "verification": {
+     "verifiedRole": "<ID OF ROLE TO ASSIGN TO USERS ONCE THEIR KERBEROS IDENTITY IS VERIFIED>",
+     "autochangeNickname": true,
+     "allowedAffiliations": [
+       "<ALLOWED AFFILIATIONS TO VERIFY A USER FOR THIS SERVER (one or more of 'student', 'faculty', 'staff', 'affiliate')>"
+     ]
+   }
 }
 ```
 
-2. **[RECOMMENDED]** Create an index for the `_name` attribute in the `config` collection.
+2. **[RECOMMENDED]** Create an index for the `_serverId` attribute in the `config.servers` collection.
 
 ## Technologies
 

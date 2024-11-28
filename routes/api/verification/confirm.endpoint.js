@@ -2,9 +2,9 @@ import { TokenSet } from 'openid-client'
 import { discord, petrock } from '../../../lib/oauthClients.js'
 import { dbClient } from '../../../lib/mongoClient.js'
 import { decrypt } from '../../../lib/simpleCrypto.js'
-import { configDb } from '../../../lib/preferencesReader.js'
 import { botHeaders, parseNickname } from '../../../lib/utils.js'
 import { gateway } from '../../../lib/discordAPIClients.js'
+import { getConfiguredServersList, getServerConfigDocument } from '../../../lib/configurationReaders.js'
 
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 const oauthTokenCollections = {
@@ -100,26 +100,15 @@ export function get (req, res) {
         }
       )
     ])
-  }).then((val) => {
-    if (val === false) {
-      return false
-    }
-    return Promise.all([
-      val[0],
-      configDb.getDocumentByName('servers')
-    ])
-  }).then((val) => {
+  }).then(async (val) => {
     if (val === false) {
       return false
     }
     const [petrockUserInfo, discordUserInfo] = val[0]
-    const serversDynamicConfig = val[1]
     const promises = [val[0]]
-    for (const serverID in serversDynamicConfig) {
-      if (serverID.startsWith('_')) {
-        continue
-      }
-      const serverConfig = serversDynamicConfig[serverID]
+    // TODO: The async/promise handling here is less than ideal.
+    for (const serverID in await getConfiguredServersList()) {
+      const serverConfig = await getServerConfigDocument(serverID)
       promises.push(gateway.guilds.fetch(serverID).then((server) => {
         const innerPromises = []
         if (serverConfig.verification.allowedAffiliations.includes(petrockUserInfo.affiliation)) {

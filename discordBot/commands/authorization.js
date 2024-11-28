@@ -1,10 +1,12 @@
-import { configDb } from '../../lib/preferencesReader.js'
 import { dbClient } from '../../lib/mongoClient.js'
+import { getServerConfigDocument } from '../../lib/configurationReaders.js'
 
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 
-export async function authorizeServer (interaction) {
-  return Object.keys(await configDb.getDocumentByName('servers')).includes(interaction.guildId)
+export function authorizeServer (interaction) {
+  return getServerConfigDocument(interaction.guildId).then((doc) => {
+    return !(doc === null || !('authorized' in doc && doc.authorized === true))
+  })
 }
 
 export async function authorizeServerAndReply (interaction, ephemeralResponse = true) {

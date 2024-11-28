@@ -1,11 +1,11 @@
 import { dbClient } from '../../lib/mongoClient.js'
-import { configDb } from '../../lib/preferencesReader.js'
 import { parseNickname } from '../../lib/utils.js'
+import { isServerConfigured, getServerConfigDocument } from '../../lib/configurationReaders.js'
 
 export default async function handler (member) {
-  let serverConfig = await configDb.getDocumentByName('servers')
-  if (member.guild.id in serverConfig) {
-    serverConfig = serverConfig[member.guild]
+  let serverConfig
+  if (isServerConfigured(member.guild.id)) {
+    serverConfig = getServerConfigDocument(member.guild.id)
   } else return
   return dbClient.collection('verification.userInfo').findOne({
     'discord.id': member.id
