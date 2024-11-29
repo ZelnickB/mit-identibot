@@ -78,6 +78,26 @@
     "description": "Determines whether the SIPB office is open or closed."
   },
   {
+    "name": "usersettings",
+    "type": 1,
+    "description": "Configures user-specific IdentiBot settings.",
+    "options": [
+      {
+        "name": "allowidphotolookup",
+        "description": "Allow trusted server moderators to look up your MIT ID photo.",
+        "type": 1,
+        "options": [
+          {
+            "type": 5,
+            "name": "value",
+            "required": false,
+            "description": "The desired value for this setting. Leave blank to see the current value."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "whois",
     "type": 1,
     "description": "Retrieves the cached profile information from a user's linked Kerberos account.",

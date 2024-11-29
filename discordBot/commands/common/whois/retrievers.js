@@ -1,5 +1,7 @@
 import { dbClient } from '../../../../lib/mongoClient.js'
 import { getByKerberos } from '../../../../lib/mitDeveloperConnection/people.js'
+import { readUserConfig } from '../../../../lib/configurationReaders.js'
+import { get } from '../../../../lib/mitDeveloperConnection/peoplePictures.js'
 
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 
@@ -24,6 +26,12 @@ export async function getKerberos (user) {
   })
 }
 
-export async function getUserInfo (user) {
-  return getByKerberos(await getKerberos(user))
+export async function getUserInfo (user, withProfilePicture) {
+  const kerberos = await getKerberos(user)
+  if (withProfilePicture === undefined) {
+    withProfilePicture = (await readUserConfig(user.id)).allowIdPhotoLookup
+  }
+  const promises = [getByKerberos(kerberos)]
+  if (withProfilePicture) promises.push(get(kerberos))
+  return Promise.all(promises).then(([userInfo, image]) => ({ userInfo, image }))
 }

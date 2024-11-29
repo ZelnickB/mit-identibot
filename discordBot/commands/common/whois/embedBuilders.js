@@ -1,9 +1,7 @@
 import { EmbedBuilder } from 'discord.js'
 import { config as configReader } from '../../../../lib/preferencesReader.js'
-import { dbClient } from '../../../../lib/mongoClient.js'
 
 const config = await configReader()
-const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
 
 export async function whoisResult (discordID, userInfo) {
   let affiliationColorCode
@@ -14,38 +12,38 @@ export async function whoisResult (discordID, userInfo) {
     .addFields(
       {
         name: 'Legal Name',
-        value: `${userInfo.familyName}, ${userInfo.givenName}${userInfo.middleName ? ' ' + userInfo.middleName : ''}`,
+        value: `${userInfo.userInfo.familyName}, ${userInfo.userInfo.givenName}${userInfo.userInfo.middleName ? ' ' + userInfo.userInfo.middleName : ''}`,
         inline: true
       },
       {
         name: 'Display Name',
-        value: userInfo.displayName,
+        value: userInfo.userInfo.displayName,
         inline: true
       },
       {
         name: 'Email/Kerberos',
-        value: `${userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.kerberosId}\`)`
+        value: `${userInfo.userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.userInfo.kerberosId}\`)`
       }
     )
-  if (userInfo.phoneNumber) {
+  if (userInfo.userInfo.phoneNumber) {
     embedBuilder.addFields({
       name: 'Phone Number',
-      value: userInfo.phoneNumber
+      value: userInfo.userInfo.phoneNumber
     })
   }
   let positionTitle, officeLocation
   const departmentNames = []
   let affiliationType
-  if (userInfo.affiliations.length > 0) {
-    affiliationType = userInfo.affiliations[0].type
-    if ('departments' in userInfo.affiliations[0]) {
-      for (const department of userInfo.affiliations[0].departments) {
+  if (userInfo.userInfo.affiliations.length > 0) {
+    affiliationType = userInfo.userInfo.affiliations[0].type
+    if ('departments' in userInfo.userInfo.affiliations[0]) {
+      for (const department of userInfo.userInfo.affiliations[0].departments) {
         departmentNames.push(department.name)
       }
     }
-    positionTitle = userInfo.affiliations[0].title
-    officeLocation = userInfo.affiliations[0].office
-    switch (userInfo.affiliations[0].type) {
+    positionTitle = userInfo.userInfo.affiliations[0].title
+    officeLocation = userInfo.userInfo.affiliations[0].office
+    switch (userInfo.userInfo.affiliations[0].type) {
       case 'faculty':
         affiliationColorCode = 0x8800FF
         affiliationEmoji = `<:faculty:${config.emoji.faculty}> `
@@ -87,7 +85,7 @@ export async function whoisResult (discordID, userInfo) {
     })
   }
   if (affiliationType === 'student') {
-    let classYear = userInfo.affiliations[0].classYear
+    let classYear = userInfo.userInfo.affiliations[0].classYear
     if (classYear === 'G') {
       classYear = 'Graduate Student'
     } else {
@@ -105,6 +103,9 @@ export async function whoisResult (discordID, userInfo) {
       value: officeLocation,
       inline: true
     })
+  }
+  if (userInfo.image !== undefined) {
+    embedBuilder.setThumbnail('attachment://user.jpeg')
   }
   embedBuilder.setColor(affiliationColorCode)
   return embedBuilder
