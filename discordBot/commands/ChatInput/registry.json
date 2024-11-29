@@ -26,6 +26,25 @@
     ]
   },
   {
+    "name": "idcard",
+    "type": 1,
+    "description": "Displays the actual identity corresponding to your linked Kerberos.",
+    "options": [
+      {
+        "type": 5,
+        "name": "withpicture",
+        "required": false,
+        "description": "Show your MIT ID card photo. Defaults to true."
+      },
+      {
+        "type": 5,
+        "name": "preview",
+        "required": false,
+        "description": "Display the card only for yourself, without showing others in the channel. Defaults to false."
+      }
+    ]
+  },
+  {
     "name": "localtime",
     "type": 1,
     "description": "Gets the local time at MIT (default) or in another specified time zone.",
@@ -36,6 +55,11 @@
         "description": "The time zone to use, in UTC offset or IANA format. Defaults to MIT's time zone."
       }
     ]
+  },
+  {
+    "name": "ping",
+    "type": 1,
+    "description": "Checks whether IdentiBot is online and measures latency."
   },
   {
     "name": "resetnick",
@@ -53,11 +77,6 @@
         "description": "User whose nickname is to be reset."
       }
     ]
-  },
-  {
-    "name": "ping",
-    "type": 1,
-    "description": "Checks whether IdentiBot is online and measures latency."
   },
   {
     "name": "searchdir",
