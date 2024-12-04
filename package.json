@@ -28,7 +28,7 @@
     "mongodb": "^6.11.0",
     "openid-client": "^5.7.0",
     "utf-8-validate": "^6.0.5",
-    "yaml": "^2.6.0"
+    "yaml": "^2.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.16.0",
