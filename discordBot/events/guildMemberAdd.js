@@ -5,7 +5,7 @@ import { isServerConfigured, getServerConfigDocument } from '../../lib/configura
 export default async function handler (member) {
   let serverConfig
   if (isServerConfigured(member.guild.id)) {
-    serverConfig = getServerConfigDocument(member.guild.id)
+    serverConfig = await getServerConfigDocument(member.guild.id)
   } else return
   return dbClient.collection('verification.userInfo').findOne({
     'discord.id': member.id
