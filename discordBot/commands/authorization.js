@@ -26,8 +26,8 @@ export async function checkUserVerification (interaction) {
     {
       'discord.id': interaction.user.id
     }
-  ).then((doc) => {
-    return doc !== null
+  ).then((count) => {
+    return count !== 0
   })
 }
 
