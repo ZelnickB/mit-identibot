@@ -7,7 +7,6 @@ export default async function (interaction) {
   interaction.deferReply({ ephemeral })
   try {
     const userInfo = await getUserInfo(interaction.user, showIdPhoto)
-    console.log(userInfo)
     const embedBuilder = new EmbedBuilder()
       .setAuthor({
         name: 'Massachusetts Institute of Technology'
