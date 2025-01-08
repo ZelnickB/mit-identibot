@@ -84,7 +84,7 @@ export function courseInformation (information) {
       },
       {
         name: 'Average Class Size',
-        value: information.enrollment_number.toString(),
+        value: 'enrollment_number' in information ? information.enrollment_number.toString() : '*Information not available.*',
         inline: true
       },
       {
