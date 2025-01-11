@@ -1,172 +1,138 @@
-import { TokenSet } from 'openid-client'
-import { discord, petrock } from '../../../lib/oauthClients.js'
 import { dbClient } from '../../../lib/mongoClient.js'
-import { decrypt } from '../../../lib/simpleCrypto.js'
-import { botHeaders, parseNickname } from '../../../lib/utils.js'
 import { gateway } from '../../../lib/discordAPIClients.js'
 import { getConfiguredServersList, getServerConfigDocument } from '../../../lib/configurationReaders.js'
+import { botHeaders, parseNickname } from '../../../lib/utils.js'
 
+const verificationSessions = dbClient.collection('verification.sessions')
 const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
-const oauthTokenCollections = {
-  petrock: dbClient.collection('verification.oauthTokens.petrock'),
-  discord: dbClient.collection('verification.oauthTokens.discord')
-}
 
 export function get (req, res) {
-  let petrockTokenSetJSON, discordTokenSetJSON
-  try {
-    petrockTokenSetJSON = JSON.parse(
-      decrypt(Buffer.from(req.cookies['oauthTokens.petrock'], 'base64url'))
-        .toString('utf8')
-    )
-    discordTokenSetJSON = JSON.parse(
-      decrypt(Buffer.from(req.cookies['oauthTokens.discord'], 'base64url'))
-        .toString('utf8')
-    )
-  } catch {
-    return res.sendStatus(400)
-  }
-  Promise.all([
-    petrock.userinfo(new TokenSet(petrockTokenSetJSON)),
-    discord.requestResource('https://discord.com/api/v10/users/@me', new TokenSet(new TokenSet(discordTokenSetJSON)))
-  ]).then(([petrockUserInfo, discordUserInfo]) => {
-    discordUserInfo = JSON.parse(discordUserInfo.body.toString('utf8'))
-    return Promise.all([
-      [petrockUserInfo, discordUserInfo],
-      verificationUserInfoCollection.findOne(
-        {
-          'petrock.sub': petrockUserInfo.sub
-        }
-      )
-    ])
-  }).then(([[petrockUserInfo, discordUserInfo], matchingKerberosDocument]) => {
-    if (matchingKerberosDocument !== null && matchingKerberosDocument.discord.id !== discordUserInfo.id) {
-      res.render('error', {
-        code: '401',
-        description: 'Unauthorized',
-        explanation: 'This Kerberos identity has already been used to verify a Discord account.'
+  verificationSessions.findOne({ sessionID: req.cookies['verification.sessionID'] })
+    .then(async (sessionInformation) => {
+      // STEP 1: Check if the provided Kerberos identity has already been used to verify a different Discord account.
+      const returnVal = {
+        sessionInformation,
+        ok: true
+      }
+      const matchingKerberosDocument = await verificationUserInfoCollection.findOne({
+        'petrock.sub': sessionInformation.petrockUser.sub
       })
-      return false
-    }
-    return Promise.all([
-      [petrockUserInfo, discordUserInfo],
-      oauthTokenCollections.petrock.updateOne(
-        { _sub: petrockUserInfo.sub },
-        {
-          $set: {
-            _sub: petrockUserInfo.sub,
-            ...petrockTokenSetJSON
-          }
-        },
-        {
-          upsert: true
-        }
-      ),
-      oauthTokenCollections.discord.updateOne(
-        { _sub: discordUserInfo.id },
-        {
-          $set: {
-            _sub: discordUserInfo.id,
-            ...discordTokenSetJSON
-          }
-        },
-        {
-          upsert: true
-        }
-      )
-    ])
-  }).then((val) => {
-    if (val === false) {
-      return false
-    }
-    const [petrockUserInfo, discordUserInfo] = val[0]
-    return Promise.all([
-      [petrockUserInfo, discordUserInfo],
-      verificationUserInfoCollection.updateOne(
+      if (matchingKerberosDocument !== null && matchingKerberosDocument.discord.id !== sessionInformation.discordUser.id) {
+        res.status(401).render('error', {
+          code: '401',
+          description: 'Unauthorized',
+          explanation: 'This Kerberos identity has already been used to verify a Discord account.'
+        })
+        returnVal.ok = false
+      }
+      return returnVal
+    })
+    .then(async (x) => {
+      // STEP 2: Add linked Kerberos identity information to the database.
+      if (!x.ok) {
+        return x
+      }
+      await verificationUserInfoCollection.updateOne(
         {
           $or: [
-            { 'petrock.sub': petrockUserInfo.sub },
-            { 'discord.id': discordUserInfo.id }
+            { 'petrock.sub': x.sessionInformation.petrockUser.sub },
+            { 'discord.id': x.sessionInformation.discordUser.id }
           ]
         },
         {
           $set: {
-            petrock: petrockUserInfo,
-            discord: discordUserInfo
+            petrock: x.sessionInformation.petrockUser,
+            discord: x.sessionInformation.discordUser
           }
         },
         {
           upsert: true
         }
       )
-    ])
-  }).then(async (val) => {
-    if (val === false) {
-      return false
-    }
-    const [petrockUserInfo, discordUserInfo] = val[0]
-    const promises = [val[0]]
-    // TODO: The async/promise handling here is less than ideal.
-    for (const serverID in await getConfiguredServersList()) {
-      const serverConfig = await getServerConfigDocument(serverID)
-      promises.push(gateway.guilds.fetch(serverID).then((server) => {
-        const innerPromises = []
-        if (serverConfig.verification.allowedAffiliations.includes(petrockUserInfo.affiliation)) {
-          innerPromises.push(
-            server.members.fetch(discordUserInfo.id).then((member) => {
+      return x
+    })
+    .then(async (x) => {
+      // STEP 3: Get list of registered servers and their configurations.
+      if (!x.ok) {
+        return x
+      }
+      const serverList = []
+      for (const serverID of await getConfiguredServersList()) {
+        serverList.push(Promise.allSettled([getServerConfigDocument(serverID), gateway.guilds.fetch(serverID)]))
+      }
+      return {
+        ...x,
+        serverList: await Promise.all(serverList)
+      }
+    })
+    .then(async (x) => {
+      // STEP 4: Add roles and update nicknames in servers where the user is a member.
+      if (!x.ok) {
+        return x
+      }
+      const tasks = []
+      for (const [config, guild] of x.serverList) {
+        if (guild.status === 'rejected') continue
+        if (config.value.verification.allowedAffiliations.includes(x.sessionInformation.petrockUser.affiliation)) {
+          tasks.push(
+            guild.value.members.fetch(x.sessionInformation.discordUser.id).then((member) => {
               return member.roles.add(
-                serverConfig.verification.verifiedRole,
-                `User verified to control Kerberos identity ${petrockUserInfo.email}.`
+                config.value.verification.verifiedRole,
+                `User verified to control Kerberos identity ${x.sessionInformation.petrockUser.email}.`
               )
             })
           )
-          if (serverConfig.verification.autochangeNickname === true) {
-            innerPromises.push(
-              server.members.fetch(discordUserInfo.id).then((member) => {
+          if (config.value.verification.autochangeNickname === true) {
+            tasks.push(
+              guild.value.members.fetch(x.sessionInformation.discordUser.id).then((member) => {
                 return member.setNickname(
-                  parseNickname(petrockUserInfo.given_name, petrockUserInfo.family_name),
-                  `Automatically updated nickname to reflect name on record for user's verified Kerberos identity: ${petrockUserInfo.name}`
+                  parseNickname(x.sessionInformation.petrockUser.given_name, x.sessionInformation.petrockUser.family_name),
+                  `Automatically updated nickname to reflect name on record for user's verified Kerberos identity: ${x.sessionInformation.petrockUser.name}`
                 )
               })
             )
           }
-          return Promise.allSettled(innerPromises)
         }
-      }))
-    }
-    return Promise.allSettled(promises)
-  }).then((val) => {
-    if (val === false) {
-      return false
-    }
-    const [petrockUserInfo, discordUserInfo] = val[0].value
-    // BEGIN CLASS OF 2028 SERVER-SPECIFIC CODE
-    fetch(`https://tlepeopledir.mit.edu/q/${petrockUserInfo.sub}`).then((x) => x.json()).then(directoryResponse => {
-      if (directoryResponse.result[0] !== undefined && directoryResponse.result[0].student_year === '1') {
-        fetch(
-          `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1186460225943912539`,
-          {
-            method: 'PUT',
-            headers: {
-              ...botHeaders,
-              'X-Audit-Log-Reason': 'User verified as year 1 student in MIT directory.'
-            }
-          }
-        )
-      } else if (directoryResponse.result[0] !== undefined) {
-        fetch(
-          `https://discord.com/api/v10/guilds/1186456227425828926/members/${discordUserInfo.id}/roles/1218369208409395301`,
-          {
-            method: 'PUT',
-            headers: {
-              ...botHeaders,
-              'X-Audit-Log-Reason': `User verified as student in MIT directory, currently in year ${directoryResponse.result[0].student_year}.`
-            }
-          }
-        )
+      }
+      return {
+        ...x,
+        tasks: await Promise.allSettled(tasks)
       }
     })
-    // END CLASS OF 2028 SERVER-SPECIFIC CODE
-    return res.redirect(302, '/verification/confirmed')
-  })
+    .then(async (x) => {
+      // STEP 5: Clear session from database and cookies and redirect to success page.
+      if (!x.ok) {
+        return x
+      }
+      // BEGIN CLASS OF 2028 SERVER-SPECIFIC CODE
+      fetch(`https://tlepeopledir.mit.edu/q/${x.sessionInformation.petrockUser.sub}`).then((x) => x.json()).then(directoryResponse => {
+        if (directoryResponse.result[0] !== undefined && directoryResponse.result[0].student_year === '1') {
+          fetch(
+            `https://discord.com/api/v10/guilds/1186456227425828926/members/${x.sessionInformation.discordUser.id}/roles/1186460225943912539`,
+            {
+              method: 'PUT',
+              headers: {
+                ...botHeaders,
+                'X-Audit-Log-Reason': 'User verified as year 1 student in MIT directory.'
+              }
+            }
+          )
+        } else if (directoryResponse.result[0] !== undefined) {
+          fetch(
+            `https://discord.com/api/v10/guilds/1186456227425828926/members/${x.sessionInformation.discordUser.id}/roles/1218369208409395301`,
+            {
+              method: 'PUT',
+              headers: {
+                ...botHeaders,
+                'X-Audit-Log-Reason': `User verified as student in MIT directory, currently in year ${directoryResponse.result[0].student_year}.`
+              }
+            }
+          )
+        }
+      })
+      // END CLASS OF 2028 SERVER-SPECIFIC CODE
+      await verificationSessions.deleteOne({ sessionID: req.cookies['verification.sessionID'] })
+      res.clearCookie('verification.sessionID')
+      return res.redirect(302, '/verification/confirmed')
+    })
 }

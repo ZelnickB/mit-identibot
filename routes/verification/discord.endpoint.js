@@ -1,24 +1,20 @@
 import * as path from 'path'
-import { TokenSet } from 'openid-client'
-import { petrock, discord } from '../../lib/oauthClients.js'
+import { discord } from '../../lib/oauthConfigurations.js'
 import { configSync } from '../../lib/preferencesReader.js'
-import { decrypt } from '../../lib/simpleCrypto.js'
+import { dbClient } from '../../lib/mongoClient.js'
+import { buildAuthorizationUrl } from 'openid-client'
+
+const verificationSessions = dbClient.collection('verification.sessions')
 
 export function get (req, res) {
-  petrock.userinfo(
-    new TokenSet(
-      JSON.parse(
-        decrypt(Buffer.from(req.cookies['oauthTokens.petrock'], 'base64url'))
-          .toString('utf8')
-      )
-    )
-  ).then((userInfo) => {
-    res.status(200).render(path.resolve(import.meta.dirname, 'endpointAssets', 'discord', 'ui.hbs'), {
-      authorizationRedirectURL: discord.authorizationUrl({
-        redirect_uri: `${configSync().baseURL}/api/verification/oauthCallbacks/discord`,
-        scope: 'openid identify email'
-      }),
-      petrockUserInfo: userInfo
+  verificationSessions.findOne({ sessionID: req.cookies['verification.sessionID'] })
+    .then((sessionInformation) => {
+      res.status(200).render(path.resolve(import.meta.dirname, 'endpointAssets', 'discord', 'ui.hbs'), {
+        authorizationRedirectURL: buildAuthorizationUrl(discord, {
+          redirect_uri: `${configSync().baseURL}/api/verification/oauthCallbacks/discord`,
+          scope: 'identify email openid role_connections.write'
+        }),
+        userInfo: sessionInformation.petrockUser
+      })
     })
-  })
 }

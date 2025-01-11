@@ -1,43 +1,45 @@
-import { errors as openidErrors } from 'openid-client'
-import { discord } from '../../../../lib/oauthClients.js'
-import { encrypt } from '../../../../lib/simpleCrypto.js'
+import * as openidClient from 'openid-client'
+import * as oauthConfigs from '../../../../lib/oauthConfigurations.js'
 import { configSync } from '../../../../lib/preferencesReader.js'
+import { dbClient } from '../../../../lib/mongoClient.js'
+
+const discordOauthTokens = dbClient.collection('verification.oauthTokens.discord')
+const verificationSessions = dbClient.collection('verification.sessions')
 
 export function get (req, res) {
-  discord.callback(`${configSync().baseURL}/api/verification/oauthCallbacks/discord`, discord.callbackParams(req.url)).then(
-    (tokens) => {
-      res.cookie('oauthTokens.discord',
-        encrypt(JSON.stringify(tokens)).toString('base64url'),
+  return openidClient.authorizationCodeGrant(oauthConfigs.discord, new URL(configSync().baseURL + req.originalUrl))
+    .then(async (tokens) => {
+      const userInfo = await openidClient.fetchProtectedResource(oauthConfigs.discord, tokens.access_token, new URL('https://discord.com/api/v10/users/@me'), 'GET').then(response => response.json())
+      return {
+        tokens,
+        userInfo
+      }
+    })
+    .then(async (userInfoAndTokens) => {
+      await discordOauthTokens.updateOne(
+        { _sub: userInfoAndTokens.userInfo.id },
         {
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 21600000
+          $set: {
+            _sub: userInfoAndTokens.userInfo.id,
+            ...userInfoAndTokens.tokens
+          }
+        },
+        {
+          upsert: true
         }
       )
-      return res.redirect(302, '/verification/confirm')
-    },
-    (reason) => {
-      if (reason instanceof openidErrors.OPError) {
-        switch (reason.error) {
-          case 'invalid_grant':
-            return res.status(400).render('error', {
-              code: '400',
-              description: 'Bad Request',
-              explanation: 'You probably refreshed this page. Please start verification again. In tech-speak, the OAuth authorization code in the URL is invalid.'
-            })
-          default:
-            return res.status(502).render('error', {
-              code: '502',
-              description: 'Bad Gateway',
-              explanation: 'Something bad happened when communicating with Discord, and we\'re not quite sure how to explain it to you.'
-            })
-        }
-      } else {
-        return res.status(500).render('error', {
-          code: '500',
-          description: 'Internal Server Error',
-          explanation: 'Something bad happened, and we\'re not quite sure how to explain it to you.'
+      return userInfoAndTokens
+    })
+    .then((userInfoAndTokens) => {
+      return verificationSessions.updateOne(
+        { sessionID: req.cookies['verification.sessionID'] },
+        {
+          $set: {
+            discordUser: userInfoAndTokens.userInfo
+          }
         })
-      }
+    })
+    .then(() => {
+      res.redirect(302, '/verification/confirm')
     })
 }
