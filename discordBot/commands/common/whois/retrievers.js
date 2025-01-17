@@ -29,7 +29,8 @@ export async function getKerberos (user) {
 export async function getUserInfo (user, withProfilePicture) {
   const kerberos = await getKerberos(user)
   if (withProfilePicture === undefined) {
-    withProfilePicture = (await readUserConfig(user.id)).allowIdPhotoLookup
+    const userConfig = await readUserConfig(user.id)
+    withProfilePicture = userConfig.allowIdPhotoLookup.moderator || userConfig.allowIdPhotoLookup.member
   }
   const promises = [getByKerberos(kerberos)]
   if (withProfilePicture) promises.push(get(kerberos))

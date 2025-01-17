@@ -42,3 +42,20 @@ export async function checkUserVerificationAndReply (interaction, ephemeralRespo
     return false
   }
 }
+
+export async function checkUserInServer (interaction, user) {
+  if (!interaction.inGuild()) return false
+  return interaction.guild.members.fetch(user.id).then(() => true, () => false)
+}
+
+export async function checkUserInServerAndReply (interaction, user, ephemeralResponse = true) {
+  if (await checkUserInServer(interaction, user)) {
+    return true
+  } else {
+    await interaction.reply({
+      content: `**Error!** The specified user, <@${user.id}>, is not a member of this server.`,
+      ephemeral: ephemeralResponse
+    })
+    return false
+  }
+}

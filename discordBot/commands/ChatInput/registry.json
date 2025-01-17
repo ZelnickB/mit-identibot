@@ -92,6 +92,22 @@
     ]
   },
   {
+    "name": "seeidphoto",
+    "type": 1,
+    "description": "Retrieves a user's MIT ID card photo (if you have permission to do so).",
+    "contexts": [
+      0
+    ],
+    "options": [
+      {
+        "type": 6,
+        "name": "user",
+        "required": true,
+        "description": "User whose ID card photo should be retrieved."
+      }
+    ]
+  },
+  {
     "name": "sipbdoor",
     "type": 1,
     "description": "Determines whether the SIPB office is open or closed."
@@ -102,8 +118,8 @@
     "description": "Configures user-specific IdentiBot settings.",
     "options": [
       {
-        "name": "allowidphotolookup",
-        "description": "Allow trusted server moderators to look up your MIT ID photo.",
+        "name": "allowmemberidphotolookup",
+        "description": "Allow all verified server members (except blocked users) to look up your MIT ID photo.",
         "type": 1,
         "options": [
           {
@@ -111,6 +127,55 @@
             "name": "value",
             "required": false,
             "description": "The desired value for this setting. Leave blank to see the current value."
+          }
+        ]
+      },
+      {
+        "name": "allowmoderatoridphotolookup",
+        "description": "Allow verified server moderators to look up your MIT ID photo.",
+        "type": 1,
+        "options": [
+          {
+            "type": 5,
+            "name": "value",
+            "required": false,
+            "description": "The desired value for this setting. Leave blank to see the current value."
+          }
+        ]
+      },
+      {
+        "name": "blockserver",
+        "description": "Block all users from interacting with you via IdentiBot commands in this server.",
+        "type": 1
+      },
+      {
+        "name": "blockuser",
+        "description": "Block a user from interacting with you via IdentiBot commands.",
+        "type": 1,
+        "options": [
+          {
+            "type": 6,
+            "name": "user",
+            "required": true,
+            "description": "The user to block."
+          }
+        ]
+      },
+      {
+        "name": "unblockserver",
+        "description": "Allow users to interact with you via IdentiBot commands in a previously blocked server.",
+        "type": 1
+      },
+      {
+        "name": "unblockuser",
+        "description": "Allow a previously blocked user to interact with you via IdentiBot commands.",
+        "type": 1,
+        "options": [
+          {
+            "type": 6,
+            "name": "user",
+            "required": true,
+            "description": "The user to unblock."
           }
         ]
       }
