@@ -8,11 +8,12 @@ export default async function (interaction) {
     switch (interaction.options.getSubcommand()) {
       case 'menus': {
         const venue = interaction.options.getString('venue')
+        const fullVenueName = dining.getVenueFullName(venue)
         const meal = interaction.options.getString('meal')
         const [, mealInfo] = await Promise.all([interaction.deferReply(), dining.getMealInfo(venue, meal)])
         if (mealInfo === undefined) {
           return interaction.editReply({
-            content: `**Error:** ${venue} is not open for ${meal.toLowerCase()} today, or the menu is not available.`
+            content: `**Error:** ${fullVenueName} is not open for ${meal.toLowerCase()} today, or the menu is not available.`
           })
         }
         const menu = dining.parseMenu(mealInfo)
@@ -40,13 +41,13 @@ export default async function (interaction) {
           }
         }
         const embed = new EmbedBuilder()
-          .setTitle(`${dining.getVenueFullName(venue)} ${meal} Menu`)
+          .setTitle(`${fullVenueName} ${meal} Menu`)
           .setAuthor({
             name: 'Massachusetts Institute of Technology Dining'
           })
           .setDescription(`${meal} is being served at ${venue} from ${mealInfo.start_time} to ${mealInfo.end_time} today.`)
           .setFooter({
-            text: `Menu for ${meal} at ${venue} Dining, ${DateTime.now().setZone('America/New_York').toFormat('ccc d LLLL, yyyy')}.`
+            text: `Menu for ${meal.toLowerCase()} at ${fullVenueName}, ${DateTime.now().setZone('America/New_York').toFormat('ccc d LLLL, yyyy')}.`
           })
           .setColor(embedColor)
         for (const station in menu) {
