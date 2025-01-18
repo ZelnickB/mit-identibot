@@ -15,6 +15,8 @@ discord:
 commandSettings:
   directory:
     enableAccountLinkStatusInDirectorySearch: true
+caching:
+  dining: true
 emoji:
   aeroastro: "12345678901234567890"
   affiliate: "12345678901234567890"

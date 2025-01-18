@@ -24,6 +24,7 @@
     "discord.js": "^14.17.3",
     "express": "^4.21.2",
     "hbs": "^4.2.0",
+    "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "mongodb": "^6.12.0",
     "openid-client": "^6.1.7",

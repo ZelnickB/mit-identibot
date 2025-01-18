@@ -26,6 +26,80 @@
     ]
   },
   {
+    "name": "dining",
+    "type": 1,
+    "description": "Retrieves up-to-date information about dining options at MIT.",
+    "options": [
+      {
+        "name": "menus",
+        "description": "Shows menus for MIT dining venues.",
+        "type": 1,
+        "options": [
+          {
+            "type": 3,
+            "name": "venue",
+            "required": true,
+            "description": "The venue for which menus should be retrieved.",
+            "choices": [
+              {
+                "name": "Maseeh Hall (W1)",
+                "value": "Maseeh"
+              },
+              {
+                "name": "McCormick Hall (W4)",
+                "value": "McCormick"
+              },
+              {
+                "name": "Baker House (W7)",
+                "value": "Baker"
+              },
+              {
+                "name": "New Vassar (W46)",
+                "value": "New Vassar"
+              },
+              {
+                "name": "Next House (W71)",
+                "value": "Next"
+              },
+              {
+                "name": "Simmons Hall (W79)",
+                "value": "Simmons"
+              }
+            ]
+          },
+          {
+            "type": 3,
+            "name": "meal",
+            "required": true,
+            "description": "The meal for which the menu should be retrieved.",
+            "choices": [
+              {
+                "name": "Breakfast",
+                "value": "Breakfast"
+              },
+              {
+                "name": "Brunch",
+                "value": "Brunch"
+              },
+              {
+                "name": "Lunch",
+                "value": "Lunch"
+              },
+              {
+                "name": "Dinner",
+                "value": "Dinner"
+              },
+              {
+                "name": "Late Night",
+                "value": "Late Night"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "idcard",
     "type": 1,
     "description": "Displays the actual identity corresponding to your linked Kerberos.",
