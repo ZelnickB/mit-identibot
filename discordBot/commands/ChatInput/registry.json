@@ -100,6 +100,23 @@
     ]
   },
   {
+    "name": "emergency",
+    "type": 1,
+    "description": "Displays emergency information for MIT's campus.",
+    "options": [
+      {
+        "name": "contacts",
+        "description": "Shows emergency contacts for MIT's campus.",
+        "type": 1
+      },
+      {
+        "name": "alerts",
+        "description": "View current emergency messages from MIT Alert.",
+        "type": 1
+      }
+    ]
+  },
+  {
     "name": "idcard",
     "type": 1,
     "description": "Displays the actual identity corresponding to your linked Kerberos.",

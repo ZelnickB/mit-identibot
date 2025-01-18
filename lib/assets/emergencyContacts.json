@@ -1,0 +1,69 @@
+[
+  {
+    "name": "MIT Police (emergency)",
+    "phone": "+1 (617) 253-1212",
+    "description": "To contact police, ambulance, fire, or a dean-on-call, or to file a report. Can also dial **100** from any campus phone."
+  },
+  {
+    "name": "Nationwide Emergency Services",
+    "phone": "911",
+    "description": "For emergencies off campus in the United States."
+  },
+  {
+    "name": "MIT Police (non-emergency)",
+    "phone": "+1 (617) 253-2996",
+    "description": "For general MIT police business and lost and found."
+  },
+  {
+    "name": "MIT Medical Urgent Care",
+    "phone": "+1 (617) 253-1311",
+    "description": "MIT Medical urgent care is open 8:00AM–8:00PM, Monday through Friday and 10:00AM–4:00PM, Saturday and Sunday. Clinical advice is available via phone when closed."
+  },
+  {
+    "name": "Student Mental Health Support",
+    "phone": "+1 (617) 253-2916",
+    "description": "Mental health and counseling resources for students."
+  },
+  {
+    "name": "MIT MyLife Services (Employees)",
+    "phone": "+1 (844) 405-LIFE (5433)",
+    "description": "Provides MIT faculty, staff, postdocs, and adult household members with 24/7 access to a network of experts who are available to help with life concerns."
+  },
+  {
+    "name": "Violence Prevention and Response",
+    "phone": "+1 (617) 253-2300",
+    "description": "Resources for survivors of sexual assault/harassment, domestic/dating violence, stalking, and/or any violence, etc."
+  },
+  {
+    "name": "International Travel Emergencies (International SOS)",
+    "phone": "+1 (215) 942-8478",
+    "description": "For medical and security services while traveling abroad on official MIT business."
+  },
+  {
+    "name": "Facilities Operations",
+    "phone": "+1 (617) 253-4948",
+    "description": "24-hour emergency repairs and response services."
+  },
+  {
+    "name": "Environmental Health and Safety",
+    "phone": "+1 (617) 452-3477",
+    "description": "For minor hazardous materials incidents and general EHS business."
+  },
+  {
+    "name": "Information Systems & Technology",
+    "phone": "+1 (617) 253-1101",
+    "description": "For 24/7 information technology support."
+  },
+  {
+    "name": "Parking and Transportation Office (after-hours)",
+    "phone": "+1 (617) 253-2997"
+  },
+  {
+    "name": "Lincoln Laboratory Emergencies",
+    "phone": "911"
+  },
+  {
+    "name": "Haystack Observatory Emergencies",
+    "phone": "911"
+  }
+]
