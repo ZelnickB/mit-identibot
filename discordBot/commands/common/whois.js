@@ -1,8 +1,9 @@
-import { getUserInfo, UnlinkedUserError } from './retrievers.js'
+import { getUserInfo, UnlinkedUserError } from '../../../lib/userLinks.js'
 import { AttachmentBuilder } from 'discord.js'
-import { whoisResult } from './embedBuilders.js'
 
-export default async function respond (interaction) {
+import { whoisResult } from '../../embedBuilders.js'
+
+export async function respond (interaction) {
   try {
     const userInfo = await getUserInfo(interaction.options.get('user').user)
     const files = []

@@ -164,7 +164,7 @@ export default async function (interaction) {
         })
       }
     }
-  } else {
-    return 0
-  }
+  } /* else {
+    // Area for subcommand groups (unimplemented)
+  } */
 }

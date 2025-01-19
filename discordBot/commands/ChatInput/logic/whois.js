@@ -1,5 +1,5 @@
 import { authorizeServerAndReply, checkUserVerificationAndReply } from '../../authorization.js'
-import respond from '../../common/whois/respond.js'
+import { respond } from '../../common/whois.js'
 
 export default async function (interaction) {
   if (!(await authorizeServerAndReply(interaction) && await checkUserVerificationAndReply(interaction))) return

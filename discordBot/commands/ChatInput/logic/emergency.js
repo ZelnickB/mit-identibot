@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { EmbedBuilder } from 'discord.js'
 import * as emergency from '../../../../lib/publicAPIs/emergency.js'
 
@@ -52,7 +51,7 @@ export default async function (interaction) {
         })
       }
     }
-  } else {
-    return 0
-  }
+  } /* else {
+    // Area for subcommand groups (unimplemented)
+  } */
 }

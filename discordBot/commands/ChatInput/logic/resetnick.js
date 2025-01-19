@@ -1,10 +1,10 @@
-import { getNewNickname } from '../../common/resetnick.js'
 import { authorizeServerAndReply } from '../../authorization.js'
+import { getAutoNickname } from '../../../../lib/userLinks.js'
 
 export default async function (interaction) {
   if (!await authorizeServerAndReply(interaction)) return
   const targetUser = interaction.options.get('user').user
-  const newNickname = await getNewNickname(targetUser)
+  const newNickname = await getAutoNickname(targetUser)
   if (newNickname === false) {
     interaction.reply({
       content: `**Error:** User <@${targetUser.id}> has not linked a Kerberos account. Their nickname cannot be reset.`,

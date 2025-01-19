@@ -1,5 +1,5 @@
-import { EmbedBuilder } from 'discord.js'
 import { DateTime } from 'luxon'
+import { EmbedBuilder } from 'discord.js'
 
 export default async function (interaction) {
   const sipbDoorResponseText = await fetch('https://sipb-door.mit.edu/text').then(res => res.text())

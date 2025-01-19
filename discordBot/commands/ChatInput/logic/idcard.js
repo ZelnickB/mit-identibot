@@ -1,5 +1,5 @@
-import { getUserInfo, UnlinkedUserError } from '../../common/whois/retrievers.js'
 import { AttachmentBuilder, EmbedBuilder } from 'discord.js'
+import { getUserInfo, UnlinkedUserError } from '../../../../lib/userLinks.js'
 
 export default async function (interaction) {
   const showIdPhoto = interaction.options.getBoolean('withpicture') !== false

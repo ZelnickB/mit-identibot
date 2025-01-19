@@ -1,6 +1,6 @@
-import { buildingInfo } from '../../common/buildings/embedBuilders.js'
-import { buildingQuery } from '../../common/buildings/retrievers.js'
-import { BadGatewayError } from '../../../lib/errors.js'
+import { buildingQuery } from '../../../../lib/publicAPIs/whereis.js'
+import { BadGatewayError } from '../../../../lib/genericErrors.js'
+import { buildingInfo } from '../../../embedBuilders.js'
 
 export default async function (interaction) {
   const query = interaction.options.get('query').value

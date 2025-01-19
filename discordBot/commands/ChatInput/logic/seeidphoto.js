@@ -1,7 +1,7 @@
 import { AttachmentBuilder, EmbedBuilder } from 'discord.js'
 import * as authorization from '../../authorization.js'
 import { readUserConfig } from '../../../../lib/configurationReaders.js'
-import { getKerberos, UnlinkedUserError } from '../../common/whois/retrievers.js'
+import { getKerberos, UnlinkedUserError } from '../../../../lib/userLinks.js'
 import { get as getPhoto } from '../../../../lib/mitDeveloperConnection/peoplePictures.js'
 
 export default async function (interaction) {
