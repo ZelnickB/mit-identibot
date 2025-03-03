@@ -15,8 +15,8 @@ importers:
         specifier: ^1.4.7
         version: 1.4.7
       discord-api-types:
-        specifier: ^0.37.117
-        version: 0.37.117
+        specifier: ^0.37.119
+        version: 0.37.119
       discord.js:
         specifier: ^14.18.0
         version: 14.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.5)
@@ -417,9 +417,6 @@ packages:
   destroy@1.2.0:
     resolution: {integrity: sha512-2sJGJTaXIIaR1w4iJSNoN0hnMY7Gpc/n8D4qSCJw8QqFWXf7cuAgnEHxBpweaVcPevC2l3KpjYCx3NypQQgaJg==}
     engines: {node: '>= 0.8', npm: 1.2.8000 || >= 1.4.16}
-
-  discord-api-types@0.37.117:
-    resolution: {integrity: sha512-d+Z6RKd7v3q22lsil7yASucqMfVVV0s0XSqu3cw7kyHVXiDO/mAnqMzqma26IYnIm2mk3TlupYJDGrdL908ZKA==}
 
   discord-api-types@0.37.119:
     resolution: {integrity: sha512-WasbGFXEB+VQWXlo6IpW3oUv73Yuau1Ig4AZF/m13tXcTKnMpc/mHjpztIlz4+BM9FG9BHQkEXiPto3bKduQUg==}
@@ -1744,8 +1741,6 @@ snapshots:
   depd@2.0.0: {}
 
   destroy@1.2.0: {}
-
-  discord-api-types@0.37.117: {}
 
   discord-api-types@0.37.119: {}
 
