@@ -5,7 +5,7 @@ import { dbClient } from '../lib/mongoClient.js'
 import { createHash } from 'crypto'
 
 const config = await configReader()
-const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
+const verificationLinksCollection = dbClient.collection('verification.links')
 
 export function buildingInfo (info) {
   const embedBuilder = new EmbedBuilder()
@@ -323,9 +323,9 @@ export async function directoryResult (detailSearchResult) {
     embedBuilder.setURL(detailSearchResult.detail.url)
   }
   if (config.commandSettings.directory.enableAccountLinkStatusInDirectorySearch) {
-    await verificationUserInfoCollection.findOne(
+    await verificationLinksCollection.findOne(
       {
-        'petrock.email': email
+        petrockEmail: email
       }
     ).then(doc => {
       if (doc === null) {

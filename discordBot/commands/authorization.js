@@ -1,7 +1,7 @@
 import { dbClient } from '../../lib/mongoClient.js'
 import { getServerConfigDocument } from '../../lib/configurationReaders.js'
 
-const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
+const verificationLinksCollection = dbClient.collection('verification.links')
 
 export function authorizeServer (interaction) {
   return getServerConfigDocument(interaction.guildId).then((doc) => {
@@ -22,9 +22,9 @@ export async function authorizeServerAndReply (interaction, ephemeralResponse = 
 }
 
 export async function checkUserVerification (interaction) {
-  return verificationUserInfoCollection.countDocuments(
+  return verificationLinksCollection.countDocuments(
     {
-      'discord.id': interaction.user.id
+      discordId: interaction.user.id
     }
   ).then((count) => {
     return count !== 0

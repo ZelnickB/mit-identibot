@@ -4,7 +4,9 @@ import { getConfiguredServersList, getServerConfigDocument } from '../../../lib/
 import { botHeaders, parseNickname } from '../../../lib/utils.js'
 
 const verificationSessions = dbClient.collection('verification.sessions')
-const verificationUserInfoCollection = dbClient.collection('verification.userInfo')
+const verificationLinksCollection = dbClient.collection('verification.links')
+const petrockUserInfoCacheCollection = dbClient.collection('cache.userInfo.petrock')
+const discordUserInfoCacheCollection = dbClient.collection('cache.userInfo.discord')
 
 export function get (req, res) {
   verificationSessions.findOne({ sessionID: req.cookies['verification.sessionID'] })
@@ -14,10 +16,10 @@ export function get (req, res) {
         sessionInformation,
         ok: true
       }
-      const matchingKerberosDocument = await verificationUserInfoCollection.findOne({
-        'petrock.sub': sessionInformation.petrockUser.sub
+      const matchingKerberosDocument = await verificationLinksCollection.findOne({
+        petrockEmail: sessionInformation.petrockUser.email
       })
-      if (matchingKerberosDocument !== null && matchingKerberosDocument.discord.id !== sessionInformation.discordUser.id) {
+      if (matchingKerberosDocument !== null && matchingKerberosDocument.discordId !== sessionInformation.discordUser.id) {
         res.status(401).render('error', {
           code: '401',
           description: 'Unauthorized',
@@ -32,23 +34,43 @@ export function get (req, res) {
       if (!x.ok) {
         return x
       }
-      await verificationUserInfoCollection.updateOne(
-        {
-          $or: [
-            { 'petrock.sub': x.sessionInformation.petrockUser.sub },
-            { 'discord.id': x.sessionInformation.discordUser.id }
-          ]
-        },
-        {
-          $set: {
-            petrock: x.sessionInformation.petrockUser,
-            discord: x.sessionInformation.discordUser
+      await Promise.all([
+        verificationLinksCollection.updateOne(
+          {
+            $or: [
+              { petrockEmail: x.sessionInformation.petrockUser.email },
+              { discordId: x.sessionInformation.discordUser.id }
+            ]
+          },
+          {
+            $set: {
+              petrockEmail: x.sessionInformation.petrockUser.email,
+              discordId: x.sessionInformation.discordUser.id
+            }
+          },
+          {
+            upsert: true
           }
-        },
-        {
-          upsert: true
-        }
-      )
+        ),
+        petrockUserInfoCacheCollection.updateOne(
+          { email: x.sessionInformation.petrockUser.email },
+          {
+            $set: x.sessionInformation.petrockUser
+          },
+          {
+            upsert: true
+          }
+        ),
+        discordUserInfoCacheCollection.updateOne(
+          { id: x.sessionInformation.discordUser.id },
+          {
+            $set: x.sessionInformation.discordUser
+          },
+          {
+            upsert: true
+          }
+        )
+      ])
       return x
     })
     .then(async (x) => {
