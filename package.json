@@ -37,6 +37,6 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-n": "^17.18.0",
     "eslint-plugin-promise": "^7.2.1",
-    "globals": "^16.1.0"
+    "globals": "^16.2.0"
   }
 }
