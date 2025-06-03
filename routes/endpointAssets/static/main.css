@@ -24,9 +24,12 @@ button {
     font-family: "Noto Sans", sans-serif;
 }
 
-.touchstone-button, .discord-button, .confirm-button {
+.hidden {
+    display: none;
+}
+
+.touchstone-button, .alumSSO-button, .admittedVerification-button, .discord-button, .confirm-button {
     padding: 0.75em;
-    font-weight: 900;
     border-width: 0pt;
     border-radius: 0.25em;
     cursor: pointer;
@@ -35,6 +38,7 @@ button {
 .touchstone-button {
     background-color: #7DB047;
     color: white;
+    margin-bottom: 5pt;
 }
 
 .touchstone-button:hover {
@@ -56,6 +60,33 @@ button {
 
 .discord-button:active {
     background-color: #3c45a6;
+}
+
+.alumSSO-button {
+    background-color: #d22030;
+    color: white;
+    margin-bottom: 5pt;
+}
+
+.alumSSO-button:hover {
+    background-color: #b11b27;
+}
+
+.alumSSO-button:active {
+    background-color: #85141d;
+}
+
+.admittedVerification-button {
+    background-color: #9A4AC7;
+    color: white;
+}
+
+.admittedVerification-button:hover {
+    background-color: #8336b0;
+}
+
+.admittedVerification-button:active {
+    background-color: #572475;
 }
 
 .confirm-button {

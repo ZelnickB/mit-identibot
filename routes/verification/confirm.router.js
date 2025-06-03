@@ -4,6 +4,6 @@ import { Router } from 'express'
 
 const router = Router()
 
-initializeRoutes(router, path.join(import.meta.dirname, 'verification')).then()
+initializeRoutes(router, path.join(import.meta.dirname, 'confirm')).then()
 
 export default router

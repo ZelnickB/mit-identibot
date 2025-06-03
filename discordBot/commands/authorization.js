@@ -24,7 +24,7 @@ export async function authorizeServerAndReply (interaction, ephemeralResponse = 
 export async function checkUserVerification (interaction) {
   return verificationLinksCollection.countDocuments(
     {
-      discordId: interaction.user.id
+      discordAccountId: interaction.user.id
     }
   ).then((count) => {
     return count !== 0

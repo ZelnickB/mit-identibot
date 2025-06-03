@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Touchstone Sign-In - MIT IdentiBot</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+</head>
+<body>
+<div>
+    <div class="centered">
+        <h1>Welcome to IdentiBot verification.</h1>
+        <p>You are verifying the Discord account <b>@{{sessionInformation.discordUser.username}}</b>. Before continuing, confirm that this is the Discord account that you wish to verify.</p>
+        <p>To continue, please select a verification method based on your MIT affiliation.</p>
+        <div class="text-centered">
+            <a href="{{ssoURLs.petrock}}">
+            <button class="touchstone-button {{extraClasses.touchstoneButton}}">
+                <img style="height: 1.5em; margin-right: 0.25em; vertical-align: middle;"
+                     src="/static/assets/mit-mark-white.svg"/> <span class="bolder">Sign in with Touchstone</span> (current students, faculty, staff, and affiliates)
+            </button>
+            </a>
+            <a href="{{ssoURLs.alumSSO}}">
+            <button class="alumSSO-button {{extraClasses.alumSSOButton}}">
+                <img style="height: 1.25em; margin-right: 0.25em; vertical-align: middle;"
+                     src="/static/assets/alumSSO-icon-white.svg"/> <span class="bolder">Sign in with Infinite Connection</span> (alumni)
+            </button>
+            </a>
+            <a href="{{ssoURLs.admittedVerification}}">
+            <button class="admittedVerification-button {{extraClasses.admittedVerificationButton}}">
+                <img style="height: 1.5em; margin-right: 0.25em; vertical-align: middle;"
+                     src="/static/assets/admittedVerification-icon-white.svg"/> <span class="bolder">Verify via MIT Admissions portal email</span> (admitted students)
+            </button>
+            </a>
+        </div>
+        <div style="color: gray; font-size: 0.75em;">
+            <p>
+                <img style="height: 1em; margin-right: 0.125em; vertical-align: middle;" src="/static/assets/secure-lock.svg"/>
+                <b>Your Kerberos/Infinite Connection credentials are sent only to MIT servers.</b> IdentiBot never has access to your password or your account.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

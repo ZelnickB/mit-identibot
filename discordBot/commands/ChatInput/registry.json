@@ -273,6 +273,11 @@
     ]
   },
   {
+    "name": "verify",
+    "type": 1,
+    "description": "Verify this Discord account by proving your MIT affiliation."
+  },
+  {
     "name": "whois",
     "type": 1,
     "description": "Retrieves the cached profile information from a user's linked Kerberos account.",

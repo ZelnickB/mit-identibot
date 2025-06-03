@@ -9,10 +9,6 @@ app.use(cookieParser())
 
 app.set('view engine', 'hbs')
 
-app.get('/', (req, res) => {
-  return res.redirect(307, '/verify')
-})
-
 import('./discordBot/initialize.js')
 
 initializeRoutes(app, path.join(import.meta.dirname, 'routes'))

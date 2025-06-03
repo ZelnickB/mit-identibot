@@ -325,7 +325,7 @@ export async function directoryResult (detailSearchResult) {
   if (config.commandSettings.directory.enableAccountLinkStatusInDirectorySearch) {
     await verificationLinksCollection.findOne(
       {
-        petrockEmail: email
+        'petrock.sub': email
       }
     ).then(doc => {
       if (doc === null) {
