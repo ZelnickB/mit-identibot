@@ -12,6 +12,8 @@ mitDeveloperConnection:
   clientID: "0123456789"
 discord:
   clientID: "12345678901234567890"
+supportContact:
+  email: "support@example.com"
 commandSettings:
   directory:
     enableAccountLinkStatusInDirectorySearch: true

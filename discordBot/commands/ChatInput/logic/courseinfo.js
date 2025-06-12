@@ -1,5 +1,7 @@
 import * as courses from '../../../../lib/publicAPIs/courses.js'
 import { courseInfo, departmentInfo } from '../../../embedBuilders.js'
+import { EmbeddableError } from '../../../../lib/errorBases.js'
+import { UnknownPrefixError } from '../../../../lib/publicAPIs/courses.js'
 
 export default async function (interaction) {
   const idQuery = interaction.options.get('id').value
@@ -10,23 +12,17 @@ export default async function (interaction) {
         embeds: [courseInfo(courseInformation)]
       })
     } catch (e) {
-      if (e instanceof courses.CourseNotFoundError) {
-        interaction.reply({
-          content: `**Error:** The specified course ID, \`${idQuery}\`, was not found in the course catalog.`,
-          ephemeral: true
-        })
+      if (e instanceof EmbeddableError) {
+        e.replyWithEmbed(interaction)
       }
     }
   } else {
     if (idQuery in courses.departmentInformation) {
-      interaction.reply({
+      return interaction.reply({
         embeds: [departmentInfo(idQuery, courses.departmentInformation[idQuery])]
       })
     } else {
-      interaction.reply({
-        content: `**Error:** The specified prefix, \`${idQuery}\`, is not known.`,
-        ephemeral: true
-      })
+      return UnknownPrefixError(idQuery).replyWithEmbed(interaction)
     }
   }
 }

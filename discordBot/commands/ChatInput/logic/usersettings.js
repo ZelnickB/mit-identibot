@@ -1,4 +1,5 @@
 import { readUserConfig, userConfigCollection } from '../../../../lib/configurationReaders.js'
+import { GuildOnlyCommandError } from '../../../../lib/errorBases.js'
 
 export default async function (interaction) {
   const isServerInteraction = interaction.guild !== null
@@ -74,10 +75,7 @@ export default async function (interaction) {
       case 'blockserver': {
         const targetServer = interaction.guild
         if (targetServer === null) {
-          return interaction.reply({
-            content: '**Error:** This command must be run in a server, not in a direct message.',
-            ephemeral: true
-          })
+          return new GuildOnlyCommandError().replyWithEmbed(interaction)
         }
         await userConfigCollection.updateOne({ _userId: interaction.user.id },
           {
@@ -120,10 +118,7 @@ export default async function (interaction) {
       case 'unblockserver': {
         const targetServer = interaction.guild
         if (targetServer === null) {
-          return interaction.reply({
-            content: '**Error:** This command must be run in a server, not in a direct message.',
-            ephemeral: true
-          })
+          return new GuildOnlyCommandError().replyWithEmbed(interaction)
         }
         await userConfigCollection.updateOne({ _userId: interaction.user.id },
           {

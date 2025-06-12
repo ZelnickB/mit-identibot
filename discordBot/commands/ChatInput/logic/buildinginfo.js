@@ -1,17 +1,12 @@
 import { buildingQuery } from '../../../../lib/publicAPIs/whereis.js'
-import { BadGatewayError } from '../../../../lib/genericErrors.js'
 import { buildingInfo } from '../../../embedBuilders.js'
+import { EmbeddableError } from '../../../../lib/errorBases.js'
 
 export default async function (interaction) {
   const query = interaction.options.get('query').value
   try {
-    const queryResult = await buildingQuery(query)
-    if (queryResult.length === 0) {
-      interaction.reply({
-        content: `**Error:** The specified query, \`${query}\`, returned no building results.`,
-        ephemeral: true
-      })
-    } else if (queryResult.length === 1) {
+    const queryResult = await buildingQuery(query, true)
+    if (queryResult.length === 1) {
       interaction.reply({
         embeds: [buildingInfo(queryResult[0])]
       })
@@ -29,11 +24,8 @@ export default async function (interaction) {
       })
     }
   } catch (e) {
-    if (e instanceof BadGatewayError) {
-      interaction.reply({
-        content: '**Error:** The upstream server encountered an internal error when performing the requested search.',
-        ephemeral: true
-      })
+    if (e instanceof EmbeddableError) {
+      e.replyWithEmbed(interaction)
     }
   }
 }

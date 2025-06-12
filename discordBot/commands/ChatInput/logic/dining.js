@@ -1,3 +1,10 @@
+import { CommandUnavailableError } from '../../../../lib/errorBases.js'
+
+export default async function (interaction) {
+  new CommandUnavailableError().replyWithEmbed(interaction)
+}
+
+/*
 import _ from 'lodash'
 import { DateTime } from 'luxon'
 import { EmbedBuilder } from 'discord.js'
@@ -63,7 +70,6 @@ export default async function (interaction) {
         })
       }
     }
-  } /* else {
-    // Area for subcommand groups (unimplemented)
-  } */
+  }
 }
+*/

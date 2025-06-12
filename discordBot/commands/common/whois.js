@@ -1,8 +1,8 @@
 import { AttachmentBuilder } from 'discord.js'
 
-import { getUserInfo, UnlinkedUserError } from '../../../lib/userLinks.js'
+import { getUserInfo } from '../../../lib/userLinks.js'
 import { whoisResult } from '../../embedBuilders.js'
-import { UserNotFoundError } from '../../../lib/mitDeveloperConnection/people.js'
+import { BadGatewayError, EmbeddableError } from '../../../lib/errorBases.js'
 
 export async function respond (interaction) {
   try {
@@ -17,21 +17,9 @@ export async function respond (interaction) {
       files
     })
   } catch (e) {
-    if (e instanceof UnlinkedUserError) {
-      return interaction.editReply({
-        content: `**Error:** <@${interaction.options.get('user').user.id}> is not linked to a Kerberos identity.`,
-        allowedMentions: {
-          parse: []
-        }
-      })
+    if (e instanceof EmbeddableError) {
+      return e.editReplyWithEmbed(interaction)
     }
-    if (e instanceof UserNotFoundError) {
-      return interaction.editReply({
-        content: '**Error:** Information about the user was unavailable. This error may occur if the user has enabled directory suppression or if they are no longer at MIT.'
-      })
-    }
-    interaction.editReply({
-      content: '**Error:** IdentiBot encountered a problem while fetching the information for this user.'
-    })
+    new BadGatewayError('IdentiBot encountered a problem while fetching the information for this user.').editReplyWithEmbed(interaction)
   }
 }

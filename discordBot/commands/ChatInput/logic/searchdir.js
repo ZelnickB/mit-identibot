@@ -1,24 +1,22 @@
 import * as webDirectory from '../../../../lib/publicAPIs/webDirectory.js'
 import { directoryResult, directoryResultList } from '../../../embedBuilders.js'
+import { EmbeddableError } from '../../../../lib/errorBases.js'
 
 export default async function (interaction) {
+  interaction.deferReply()
   try {
     const result = (await webDirectory.detailSearch(interaction.options.get('query').value))[0]
-    interaction.reply({
+    interaction.editReply({
       embeds: [await directoryResult(result)]
     })
   } catch (e) {
-    if (e instanceof webDirectory.NoDirectoryResultsError) {
-      interaction.reply({
-        content: `**Error:** The specified query, \`${interaction.options.get('query').value}\`, returned no directory results.`,
-        ephemeral: true
+    if (e instanceof webDirectory.MultipleDirectoryResultsError) {
+      return interaction.editReply({
+        embeds: [await directoryResultList(e.results, interaction.options.get('query').value)]
       })
     }
-    if (e instanceof webDirectory.MultipleDirectoryResultsError) {
-      interaction.reply({
-        embeds: [await directoryResultList(e.results, interaction.options.get('query').value)],
-        ephemeral: true
-      })
+    if (e instanceof EmbeddableError) {
+      return e.editReplyWithEmbed(interaction)
     }
   }
 }

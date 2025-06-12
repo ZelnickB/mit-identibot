@@ -1,8 +1,9 @@
 import { dbClient } from '../../../lib/mongoClient.js'
+import { IdentiBotError } from '../../../lib/errorBases.js'
 
 const verificationSessionsCollection = dbClient.collection('verification.sessions')
 
-export class SessionInformationRetrievalError extends Error {}
+export class SessionInformationRetrievalError extends IdentiBotError {}
 export class InvalidSessionIdError extends SessionInformationRetrievalError {}
 export class MissingSessionIdCookieError extends SessionInformationRetrievalError {}
 
