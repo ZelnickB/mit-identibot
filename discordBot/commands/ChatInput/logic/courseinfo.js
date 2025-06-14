@@ -22,7 +22,7 @@ export default async function (interaction) {
         embeds: [departmentInfo(idQuery, courses.departmentInformation[idQuery])]
       })
     } else {
-      return UnknownPrefixError(idQuery).replyWithEmbed(interaction)
+      return new UnknownPrefixError(idQuery).replyWithEmbed(interaction)
     }
   }
 }
