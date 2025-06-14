@@ -3,6 +3,7 @@ import { config as configReader } from '../lib/preferencesReader.js'
 import { boolToYesNo } from '../lib/utils.js'
 import { dbClient } from '../lib/mongoClient.js'
 import { createHash } from 'crypto'
+import getMarkdownFromName from '../lib/applicationEmojis.js'
 
 const config = await configReader()
 const verificationLinksCollection = dbClient.collection('verification.links')
@@ -86,7 +87,7 @@ export function departmentInfo (prefix, information) {
     .setTitle(
       (
         'emojiName' in information
-          ? `<:${information.emojiName}:${config.emoji[information.emojiName]}> `
+          ? getMarkdownFromName(information.emojiName, true)
           : ''
       ) + information.name
     )
@@ -135,15 +136,16 @@ export function courseInfo (information) {
       (
         'level' in information
           ? (information.level === 'U'
-              ? `<:undergraduate:${config.emoji.undergraduate}> `
-              : `<:graduate:${config.emoji.graduate}> `)
+              ? getMarkdownFromName('undergraduate', true)
+              : getMarkdownFromName('graduate', true))
           : ''
       ) +
       (
         'communication_requirement' in information
           ? (information.communication_requirement === 'CI-H'
-              ? `<:ci_h:${config.emoji.ci_h}> `
-              : `<:ci_hw:${config.emoji.ci_hw}> `)
+              ? getMarkdownFromName('ci_h', true)
+              : getMarkdownFromName('ci_hw', true)
+            )
           : ''
       ) +
       `${information.subject_id}: ${information.title}`)
@@ -229,54 +231,54 @@ export async function directoryResult (detailSearchResult) {
     switch (department) {
       case 'Aeronautics and Astronautics':
       case 'Department of Aeronautics and Astronautics':
-        department = `<:aeroastro:${config.emoji.aeroastro}> ` + department
+        department = getMarkdownFromName('aeroastro', true) + department
         break
       case 'Brain and Cognitive Sciences':
       case 'Department of Brain and Cognitive Sciences':
-        department = `<:bcs:${config.emoji.bcs}> ` + department
+        department = getMarkdownFromName('bcs', true) + department
         break
       case 'Civil and Environmental Engineering':
       case 'Department of Civil and Environmental Engineering':
-        department = `<:cee:${config.emoji.cee}> ` + department
+        department = getMarkdownFromName('cee', true) + department
         break
       case 'Comparative Media Studies/Writing':
-        department = `<:cms:${config.emoji.cms}> ` + department
+        department = getMarkdownFromName('cms', true) + department
         break
       case 'Materials Science and Engineering':
       case 'Department of Materials Science and Engineering':
-        department = `<:dmse:${config.emoji.dmse}> ` + department
+        department = getMarkdownFromName('dmse', true) + department
         break
       case 'Urban Studies and Planning':
       case 'Department of Urban Studies and Planning':
-        department = `<:dusp:${config.emoji.dusp}> ` + department
+        department = getMarkdownFromName('dusp', true) + department
         break
       case 'Edgerton Center':
-        department = `<:edgerton:${config.emoji.edgerton}> ` + department
+        department = getMarkdownFromName('edgerton', true) + department
         break
       case 'Electrical Engineering and Computer Science':
       case 'Dept of Electrical Engineering & Computer Science':
-        department = `<:eecs:${config.emoji.eecs}> ` + department
+        department = getMarkdownFromName('eecs', true) + department
         break
       case 'Experimental Study Group':
-        department = `<:esg:${config.emoji.esg}> ` + department
+        department = getMarkdownFromName('esg', true) + department
         break
       case 'Literature':
       case 'Literature Section':
-        department = `<:lit:${config.emoji.lit}> ` + department
+        department = getMarkdownFromName('lit', true) + department
         break
       case 'Mechanical Engineering':
       case 'Department of Mechanical Engineering':
-        department = `<:meche:${config.emoji.meche}> ` + department
+        department = getMarkdownFromName('meche', true) + department
         break
       case 'Physics':
       case 'Department of Physics':
-        department = `<:physics:${config.emoji.physics}> ` + department
+        department = getMarkdownFromName('physics', true) + department
         break
       case 'Supply Chain Management Program':
-        department = `<:scm:${config.emoji.scm}> ` + department
+        department = getMarkdownFromName('scm', true) + department
         break
       case 'MIT Program in Women\'s and Gender Studies':
-        department = `<:wgs:${config.emoji.wgs}> ` + department
+        department = getMarkdownFromName('wgs', true) + department
         break
     }
     embedBuilder.addFields([{
@@ -329,9 +331,9 @@ export async function directoryResult (detailSearchResult) {
       }
     ).then(doc => {
       if (doc === null) {
-        return `<:no_discord:${config.emoji.no_discord}> No Discord account linked`
+        return `${getMarkdownFromName('no_discord')} No Discord account linked`
       } else {
-        return `<:discord:${config.emoji.discord}> Discord account linked`
+        return `${getMarkdownFromName('discord')} Discord account linked`
       }
     }).then(val => {
       embedBuilder.addFields([{
@@ -393,19 +395,19 @@ export async function whoisResult (discordID, userInfo) {
     switch (userInfo.userInfo.affiliations[0].type) {
       case 'faculty':
         affiliationColorCode = 0x8800FF
-        affiliationEmoji = `<:faculty:${config.emoji.faculty}> `
+        affiliationEmoji = getMarkdownFromName('faculty', true)
         break
       case 'staff':
         affiliationColorCode = 0x00CCFF
-        affiliationEmoji = `<:staff:${config.emoji.staff}> `
+        affiliationEmoji = getMarkdownFromName('staff', true)
         break
       case 'affiliate':
         affiliationColorCode = 0xFFD900
-        affiliationEmoji = `<:affiliate:${config.emoji.affiliate}> `
+        affiliationEmoji = getMarkdownFromName('affiliate', true)
         break
       case 'student':
         affiliationColorCode = 0x88FF00
-        affiliationEmoji = `<:student:${config.emoji.student}> `
+        affiliationEmoji = getMarkdownFromName('student', true)
         break
       default:
         affiliationColorCode = 0xFFFFFF
