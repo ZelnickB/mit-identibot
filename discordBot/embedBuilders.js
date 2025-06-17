@@ -4,6 +4,7 @@ import { boolToYesNo } from '../lib/utils.js'
 import { dbClient } from '../lib/mongoClient.js'
 import { createHash } from 'crypto'
 import getMarkdownFromName from '../lib/applicationEmojis.js'
+import { getStudentYearFromUserInfo } from '../lib/mitDeveloperConnection/people.js'
 
 const config = await configReader()
 const verificationLinksCollection = dbClient.collection('verification.links')
@@ -352,109 +353,113 @@ export async function directoryResult (detailSearchResult) {
   return embedBuilder
 }
 
-export async function whoisResult (discordID, userInfo) {
-  let affiliationColorCode
-  let affiliationEmoji = ' '
+export function whoisResult (discordID, infoSource, userInfo, thumbnailURL) {
+  let affiliationColorCode = 0xFFFFFF
+  let affiliationEmoji = ''
   const embedBuilder = new EmbedBuilder()
     .setTitle('Verified User Information')
     .setDescription(`The Discord user <@${discordID}> has been identified as the following individual.`)
-    .addFields(
-      {
-        name: 'Legal Name',
-        value: `${userInfo.userInfo.familyName}, ${userInfo.userInfo.givenName}${userInfo.userInfo.middleName ? ' ' + userInfo.userInfo.middleName : ''}`,
-        inline: true
-      },
-      {
-        name: 'Display Name',
-        value: userInfo.userInfo.displayName,
-        inline: true
-      },
-      {
-        name: 'Email/Kerberos',
-        value: `${userInfo.userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.userInfo.kerberosId}\`)`
+  switch (infoSource) {
+    case 'kerberos': {
+      embedBuilder.addFields(
+        {
+          name: 'Legal Name',
+          value: `${userInfo.familyName}, ${userInfo.givenName}${userInfo.middleName ? ' ' + userInfo.middleName : ''}`,
+          inline: true
+        },
+        {
+          name: 'Display Name',
+          value: userInfo.displayName,
+          inline: true
+        },
+        {
+          name: 'Email/Kerberos',
+          value: `${userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.kerberosId}\`)`
+        }
+      )
+      if (userInfo.phoneNumber) {
+        embedBuilder.addFields({
+          name: 'Phone Number',
+          value: userInfo.phoneNumber
+        })
       }
-    )
-  if (userInfo.userInfo.phoneNumber) {
-    embedBuilder.addFields({
-      name: 'Phone Number',
-      value: userInfo.userInfo.phoneNumber
-    })
-  }
-  let positionTitle, officeLocation
-  const departmentNames = []
-  let affiliationType
-  if (userInfo.userInfo.affiliations.length > 0) {
-    affiliationType = userInfo.userInfo.affiliations[0].type
-    if ('departments' in userInfo.userInfo.affiliations[0]) {
-      for (const department of userInfo.userInfo.affiliations[0].departments) {
-        departmentNames.push(department.name)
+      let positionTitle, officeLocation
+      const departmentNames = []
+      let affiliationType
+      if (userInfo.affiliations.length > 0) {
+        affiliationType = userInfo.affiliations[0].type
+        if ('departments' in userInfo.affiliations[0]) {
+          for (const department of userInfo.affiliations[0].departments) {
+            departmentNames.push(department.name)
+          }
+        }
+        positionTitle = userInfo.affiliations[0].title
+        officeLocation = userInfo.affiliations[0].office
+        switch (userInfo.affiliations[0].type) {
+          case 'faculty':
+            affiliationColorCode = 0x8800FF
+            affiliationEmoji = getMarkdownFromName('faculty', true)
+            break
+          case 'staff':
+            affiliationColorCode = 0x00CCFF
+            affiliationEmoji = getMarkdownFromName('staff', true)
+            break
+          case 'affiliate':
+            affiliationColorCode = 0xFFD900
+            affiliationEmoji = getMarkdownFromName('affiliate', true)
+            break
+          case 'student':
+            affiliationColorCode = 0x88FF00
+            affiliationEmoji = getMarkdownFromName('student', true)
+            break
+        }
+        embedBuilder.addFields({
+          name: 'Affiliation Type',
+          value: affiliationEmoji + affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
+          inline: true
+        })
       }
+      if (positionTitle) {
+        embedBuilder.addFields({
+          name: 'Title',
+          value: positionTitle,
+          inline: true
+        })
+      }
+      if (departmentNames.length > 0) {
+        embedBuilder.addFields({
+          name: 'Departments',
+          value: departmentNames.join(', '),
+          inline: true
+        })
+      }
+      let classYear = getStudentYearFromUserInfo(userInfo)
+      if (classYear === 'G') {
+        classYear = 'Graduate Student'
+      } else if (classYear !== undefined) {
+        classYear = `Year ${classYear}`
+      }
+      if (classYear) {
+        embedBuilder.addFields({
+          name: 'Class Year',
+          value: classYear,
+          inline: true
+        })
+      }
+      if (officeLocation) {
+        embedBuilder.addFields({
+          name: 'Office',
+          value: officeLocation,
+          inline: true
+        })
+      }
+      embedBuilder.setFooter({
+        text: 'Information retrieved from the MIT People database.'
+      })
     }
-    positionTitle = userInfo.userInfo.affiliations[0].title
-    officeLocation = userInfo.userInfo.affiliations[0].office
-    switch (userInfo.userInfo.affiliations[0].type) {
-      case 'faculty':
-        affiliationColorCode = 0x8800FF
-        affiliationEmoji = getMarkdownFromName('faculty', true)
-        break
-      case 'staff':
-        affiliationColorCode = 0x00CCFF
-        affiliationEmoji = getMarkdownFromName('staff', true)
-        break
-      case 'affiliate':
-        affiliationColorCode = 0xFFD900
-        affiliationEmoji = getMarkdownFromName('affiliate', true)
-        break
-      case 'student':
-        affiliationColorCode = 0x88FF00
-        affiliationEmoji = getMarkdownFromName('student', true)
-        break
-      default:
-        affiliationColorCode = 0xFFFFFF
-        break
-    }
-    embedBuilder.addFields({
-      name: 'Affiliation Type',
-      value: affiliationEmoji + affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
-      inline: true
-    })
-  } else affiliationColorCode = 0xFFFFFF
-  if (positionTitle) {
-    embedBuilder.addFields({
-      name: 'Title',
-      value: positionTitle,
-      inline: true
-    })
   }
-  if (departmentNames.length > 0) {
-    embedBuilder.addFields({
-      name: 'Departments',
-      value: departmentNames.join(', '),
-      inline: true
-    })
-  }
-  if (affiliationType === 'student') {
-    let classYear = userInfo.userInfo.affiliations[0].classYear
-    if (classYear === 'G') {
-      classYear = 'Graduate Student'
-    } else {
-      classYear = 'Year ' + classYear
-    }
-    embedBuilder.addFields({
-      name: 'Class Year',
-      value: classYear,
-      inline: true
-    })
-  }
-  if (officeLocation) {
-    embedBuilder.addFields({
-      name: 'Office',
-      value: officeLocation,
-      inline: true
-    })
-  }
-  if (userInfo.image !== undefined) {
-    embedBuilder.setThumbnail('attachment://user.jpeg')
+  if (thumbnailURL) {
+    embedBuilder.setThumbnail(thumbnailURL)
   }
   embedBuilder.setColor(affiliationColorCode)
   return embedBuilder

@@ -1,12 +1,15 @@
 import { AttachmentBuilder, EmbedBuilder } from 'discord.js'
-import { getUserInfo, UnlinkedUserError } from '../../../../lib/userLinks.js'
+import { EmbeddableError } from '../../../../lib/errorBases.js'
+import * as userLinks from '../../../../lib/userLinks.js'
+import { get as getIdPhoto } from '../../../../lib/mitDeveloperConnection/peoplePictures.js'
 
 export default async function (interaction) {
-  const showIdPhoto = interaction.options.getBoolean('withpicture') !== false
+  const showIdPhoto = interaction.options.get('withpicture') === null || interaction.options.getBoolean('withpicture')
   const ephemeral = interaction.options.getBoolean('preview') === true
-  interaction.deferReply({ ephemeral })
+  await interaction.deferReply({ ephemeral })
   try {
-    const userInfo = await getUserInfo(interaction.user, showIdPhoto)
+    const userInfo = (await userLinks.getUserInfo(interaction.user)).kerberos
+    if (userInfo === undefined) return new userLinks.MissingLinkError(interaction.user.id, 'kerberos', false).editReplyWithEmbed(interaction)
     const embedBuilder = new EmbedBuilder()
       .setAuthor({
         name: 'Massachusetts Institute of Technology'
@@ -20,7 +23,7 @@ export default async function (interaction) {
         },
         {
           name: 'Name',
-          value: userInfo.userInfo.displayName,
+          value: userInfo.displayName,
           inline: true
         }
       ])
@@ -28,8 +31,8 @@ export default async function (interaction) {
       .setFooter({
         text: 'Not valid for official identification purposes. Sent upon request.'
       })
-    if (userInfo.userInfo.affiliations.length > 0) {
-      const affiliationType = userInfo.userInfo.affiliations[0].type
+    if (userInfo.affiliations.length > 0) {
+      const affiliationType = userInfo.affiliations[0].type
       embedBuilder.addFields({
         name: 'Affiliation',
         value: affiliationType.charAt(0).toUpperCase() + affiliationType.substring(1),
@@ -38,26 +41,21 @@ export default async function (interaction) {
     }
     embedBuilder.addFields({
       name: 'Email/Kerberos',
-      value: `${userInfo.userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.userInfo.kerberosId}\`)`,
+      value: `${userInfo.email.replaceAll('_', '\\_')} (\`${userInfo.kerberosId}\`)`,
       inline: true
     })
     const files = []
-    if (userInfo.image !== undefined) {
-      files.push(new AttachmentBuilder(userInfo.image, { name: 'user.jpeg' }))
+    if (showIdPhoto) {
+      files.push(new AttachmentBuilder(await getIdPhoto(userInfo.kerberosId), { name: 'user.jpeg' }))
       embedBuilder.setThumbnail('attachment://user.jpeg')
     }
-    return await interaction.editReply({
+    return interaction.editReply({
       embeds: [embedBuilder],
       files
     })
   } catch (e) {
-    if (e instanceof UnlinkedUserError) {
-      return await interaction.editReply({
-        content: `The user <@${interaction.user.id}> does not have a linked Kerberos identity.`,
-        allowedMentions: {
-          parse: []
-        }
-      })
+    if (e instanceof EmbeddableError) {
+      return e.editReplyWithEmbed(interaction)
     }
   }
 }
