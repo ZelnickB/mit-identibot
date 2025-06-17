@@ -12,7 +12,7 @@ export async function respond (interaction) {
   const files = []
   if ('kerberos' in userInfo) {
     if (userInfo.kerberos instanceof EmbeddableError) return userInfo.kerberos.editReplyWithEmbed(interaction)
-    const userConfig = await readUserConfig(interaction.user.id)
+    const userConfig = await readUserConfig(interaction.options.get('user').user.id)
     if (userConfig.allowIdPhotoLookup.moderator || userConfig.allowIdPhotoLookup.member) {
       files.push(new AttachmentBuilder(await getIdPhoto(userInfo.kerberos.kerberosId), { name: 'user.jpeg' }))
     }
