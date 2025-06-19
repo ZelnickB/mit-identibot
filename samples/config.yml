@@ -20,3 +20,9 @@ commandSettings:
 caching:
   dining: true
 singleServerMessages: false
+smtp:
+  hostname: 'outgoing.example.com'
+  port: 465
+  username: 'username'
+  fromUser: '"MIT IdentiBot" <identibot@example.com>'
+  replyTo: 'support@example.com'

@@ -35,6 +35,9 @@ importers:
       mongodb:
         specifier: ^6.17.0
         version: 6.17.0
+      nodemailer:
+        specifier: ^7.0.3
+        version: 7.0.3
       openid-client:
         specifier: ^6.1.7
         version: 6.1.7
@@ -1011,6 +1014,10 @@ packages:
   node-gyp-build@4.8.1:
     resolution: {integrity: sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==}
     hasBin: true
+
+  nodemailer@7.0.3:
+    resolution: {integrity: sha512-Ajq6Sz1x7cIK3pN6KesGTah+1gnwMnx5gKl3piQlQQE/PwyJ4Mbc8is2psWYxK3RJTVeqsDaCv8ZzXLCDHMTZw==}
+    engines: {node: '>=6.0.0'}
 
   oauth4webapi@3.1.4:
     resolution: {integrity: sha512-eVfN3nZNbok2s/ROifO0UAc5G8nRoLSbrcKJ09OqmucgnhXEfdIQOR4gq1eJH1rN3gV7rNw62bDEgftsgFtBEg==}
@@ -2503,6 +2510,8 @@ snapshots:
   neo-async@2.6.2: {}
 
   node-gyp-build@4.8.1: {}
+
+  nodemailer@7.0.3: {}
 
   oauth4webapi@3.1.4: {}
 
