@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Confirm Verification - MIT IdentiBot</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        html {
+            background-image: url("/static/usr/admittedVerificationBackground.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="centered">
+        <h1>Are you sure that you want to link your admitted student profile to this Discord account?</h1>
+        <p><b>Your admitted student profile can verify <em>only one</em> Discord account.</b> If you continue:</p>
+        <ul>
+            <li><b>Your admitted student profile will be linked to the Discord account @{{sessionInformation.discordUser.username}}.</b> <i>You cannot undo this action without assistance</i>.</li>
+            <li><b>Your nickname in some Discord servers will be updated to &ldquo;{{newServerNickname}}&rdquo;</b>, which was listed as your preferred name in your MIT application. You will still be able to change your nickname if you have permission to do so.</li>
+            <li><b>Server moderators with a verified MIT affiliation</b> will be able to look up your name.</li>
+        </ul>
+        <div class="text-centered">
+            <a href="/verification/confirm/admitted?challenge={{sessionInformation.linksInProgress.admitted.challengeString}}">
+                <button class="confirm-button">
+                    Verify @{{sessionInformation.discordUser.username}}
+                </button>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

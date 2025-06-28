@@ -58,6 +58,10 @@ export class UserNotInServerError extends EmbeddableError {
   }
 }
 
+export const authorizedVerificationMethods = [
+  'petrock'
+]
+
 export function authorizeServer (interaction) {
   return getServerConfigDocument(interaction.guildId).then((doc) => {
     if (doc === null || !('authorized' in doc && doc.authorized === true)) {
@@ -78,14 +82,16 @@ export async function authorizeServerAndReply (interaction, ephemeralResponse = 
 }
 
 export async function checkUserVerification (interaction) {
-  return verificationLinksCollection.countDocuments(
+  return verificationLinksCollection.findOne(
     {
       discordAccountId: interaction.user.id
     }
-  ).then((count) => {
-    if (count === 0) {
-      throw new UnauthorizedUserError(interaction.user.id)
-    } else return true
+  ).then((doc) => {
+    if (!doc) throw new UnauthorizedUserError(interaction.user.id)
+    for (const allowedMethod of authorizedVerificationMethods) {
+      if (allowedMethod in doc) return true
+    }
+    throw new UnauthorizedUserError(interaction.user.id)
   })
 }
 

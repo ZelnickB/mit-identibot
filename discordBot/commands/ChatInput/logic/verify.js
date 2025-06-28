@@ -39,6 +39,19 @@ export default async function (interaction) {
         }
       )
     })
+    .then(async updateResult => {
+      await verificationSessionsCollection.updateOne(
+        {
+          'discordUser.id': interaction.user.id
+        },
+        {
+          $unset: {
+            'linksInProgress.admitted': null
+          }
+        }
+      )
+      return updateResult
+    })
     .then(updateResult => interaction.editReply({
       content: `**Use the button below to verify your account.**\n-# :clock1: **This link expires** <t:${Math.round(expiration.getTime() / 1000)}:R>. It will be deactivated and replaced if you run this command again.${updateResult.upsertedCount === 0 ? '\n-# :no_entry_sign: **A previously generated link was deactivated when you ran this command.** You can no longer use any previously generated links to perform verification.' : ''}\n-# :warning: **This link is specific to you.** If you share it with other people, then they may be able to make changes to your verification settings.`,
       components: [

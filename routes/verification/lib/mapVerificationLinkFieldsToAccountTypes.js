@@ -3,6 +3,8 @@ export default function (fieldNames) {
     switch (i) {
       case 'petrock':
         return 'petrock'
+      case 'admitted':
+        return 'admitted'
       default:
         return null
     }

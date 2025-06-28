@@ -40,10 +40,11 @@ export async function get (req, res) {
           scope: 'openid email profile'
         }),
         alumSSO: "javascript:alert('This feature is not yet implemented.')",
-        admittedVerification: "javascript:alert('This feature is not yet implemented.')"
+        admittedVerification: '/verification/admitted'
       },
       extraClasses: {
-        touchstoneButton: returnHiddenIfTrue(sessionInformation.linkedAccounts.includes('petrock'))
+        touchstoneButton: returnHiddenIfTrue(sessionInformation.linkedAccounts.includes('petrock')),
+        admittedVerificationButton: returnHiddenIfTrue(sessionInformation.linkedAccounts.includes('admitted'))
       }
     })
 }

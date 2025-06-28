@@ -1,8 +1,9 @@
 import * as path from 'path'
 import { initializeAll as initializeRoutes } from '../lib/initializeRoutes.js'
-import { Router } from 'express'
+import Express from 'express'
 
-const router = Router()
+const router = Express.Router()
+router.use(Express.urlencoded())
 
 router.get('/', (req, res) => {
   res.redirect(307, '/verification/touchstone')

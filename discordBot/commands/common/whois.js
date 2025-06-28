@@ -18,7 +18,7 @@ export async function respond (interaction) {
         files.push(new AttachmentBuilder(await getIdPhoto(userInfo.kerberos.kerberosId), { name: 'user.jpeg' }))
       }
       embed = whoisResult(interaction.options.get('user').user.id, 'kerberos', userInfo.kerberos, files.length !== 0 ? 'attachment://user.jpeg' : undefined)
-    }
+    } else if ('admitted' in userInfo) embed = whoisResult(interaction.options.get('user').user.id, 'admitted', userInfo.admitted)
     return interaction.editReply({
       embeds: [embed],
       files

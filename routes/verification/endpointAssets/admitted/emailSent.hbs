@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Confirmation Email Sent - MIT IdentiBot</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        html {
+            background-image: url("/static/usr/admittedVerificationBackground.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            backdrop-filter: blur(10px)
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="centered">
+        <h1>Confirmation email sent.</h1>
+        <p>If {{email}} belongs to an admitted student <em>and</em> has not already been used to verify another Discord account, then an email has been sent to this address with further instructions.</p>
+        <p>If you do not receive the email after a few minutes, then:</p>
+        <ul>
+            <li><b>Confirm that {{email}} is the correct email.</b> The email that you enter must match the one that you provided on the <a href="https://apply.mitadmissions.org/portal/apply">MIT admissions portal</a> when you applied to MIT.<br />
+            <b>If you changed your admissions portal email at some point during the application process, our records may not be up to date.</b> If you do not receive the confirmation email, contact <a href="mailto:{{admittedSupportEmail}}">{{admittedSupportEmail}}</a> for assistance. Include your first and last name and application reference number in your message, as well as the original email that you used in the admissions portal (if you remember it).</li>
+            <li><b>Check your spam folder.</b> The confirmation email may end up there by accident.</li>
+            <li><b>Confirm that you have not already verified another Discord account with this email.</b> For security reasons, each admitted student can verify <i>only one</i> Discord account.</li>
+            <li><b>If you were admitted during a non-current admissions cycle,</b> our records may not include your information. If you have a Kerberos account, you should use that to verify instead. Contact <a href="mailto:{{admittedSupportEmail}}">{{admittedSupportEmail}}</a> for assistance. Include your first and last name, application reference number, and application cycle year in your message.</li>
+        </ul>
+        <p>If you need to restart the verification process (e.g., because you entered your email incorrectly), run <b>/verify</b> again from Discord.</p>
+        <p>If you need further support, contact <a href="mailto:{{admittedSupportEmail}}">{{admittedSupportEmail}}</a>.</p>
+    </div>
+</div>
+</body>
+</html>

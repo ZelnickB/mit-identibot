@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>Admitted Student Verification - MIT IdentiBot</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
+    <style>
+        html {
+            background-image: url("/static/usr/admittedVerificationBackground.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        input[name=admissionsPortalEmail] {
+            width: 80%;
+            padding: 0.5em;
+            border-width: 0;
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="centered">
+        <h1>Welcome to the Massachusetts Institute of Technology!</h1>
+        <p><b>Congratulations on your acceptance to MIT!</b></p>
+        <p>This page will allow you to verify that you are an admitted student and gain access to private Discord servers for the MIT community.</p>
+        <p>To continue, please enter the email that you specified in your <a href="https://apply.mitadmissions.org/portal/apply">MIT application</a>.</p>
+        <div class="text-centered">
+            <form method="post">
+                <input name="admissionsPortalEmail" type="email" placeholder="Admissions portal email" required><br />
+                <button class="admittedVerification-button" type="submit"><b>Continue</b> to email verification</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

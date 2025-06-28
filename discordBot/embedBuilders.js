@@ -456,6 +456,44 @@ export function whoisResult (discordID, infoSource, userInfo, thumbnailURL) {
       embedBuilder.setFooter({
         text: 'Information retrieved from the MIT People database.'
       })
+      break
+    }
+    case 'admitted': {
+      embedBuilder.addFields(
+        {
+          name: 'Preferred Name',
+          value: userInfo.preferredName,
+          inline: true
+        },
+        {
+          name: 'Admitted to',
+          value: `Class of **${userInfo.years.originalClassYear}**`,
+          inline: true
+        }
+      )
+      if (userInfo.years.gapYearClassYear) {
+        embedBuilder.addFields({
+          name: 'Final class year',
+          value: `Class of **${userInfo.years.gapYearClassYear}**\n-# Class year of the user, taking into account gap years taken.`,
+          inline: true
+        })
+      }
+      embedBuilder.addFields(
+        {
+          name: 'Admissions Cycle',
+          value: `${userInfo.years.cycleYear}\u2013${parseInt(userInfo.years.cycleYear) + 1}`,
+          inline: true
+        },
+        {
+          name: 'Affiliation Type',
+          value: `${getMarkdownFromName('admitted')} Admitted Student\n-# IdentiBot has **not verified** that the user has committed to attending MIT.`,
+          inline: true
+        }
+      )
+      affiliationColorCode = 0xFF00FF
+      embedBuilder.setFooter({
+        text: `Information retrieved from the IdentiBot admitted students database (populated by the MIT Admissions Office).\nAccess to admitted student information via IdentiBot is limited. If you need more information about a specific admitted student, contact ${config.supportContacts.emails.admittedVerification}.`
+      })
     }
   }
   if (thumbnailURL) {
