@@ -3,6 +3,9 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 import { dbClient } from '../../../../lib/mongoClient.js'
 import { configSync } from '../../../../lib/preferencesReader.js'
 import mapVerificationLinkFieldsToAccountTypes from '../../../../routes/verification/lib/mapVerificationLinkFieldsToAccountTypes.js'
+import * as configReaders from '../../../../lib/configurationReaders.js'
+import { assignRolesToGuildMember } from '../../../../lib/guildUserModifier.js'
+import { UnlinkedUserError } from '../../../../lib/userLinks.js'
 
 const verificationLinksCollection = dbClient.collection('verification.links')
 const verificationSessionsCollection = dbClient.collection('verification.sessions')
@@ -12,6 +15,17 @@ export default async function (interaction) {
   const sessionId = crypto.randomBytes(32)
   const sessionIdBase64url = sessionId.toString('base64url')
   const expiration = new Date(Date.now() + 3600000)
+  let rolesAssigned = false
+  if (interaction.guild !== null && await configReaders.isServerConfigured(interaction.guild.id)) {
+    try {
+      await assignRolesToGuildMember(interaction.member)
+      rolesAssigned = true
+    } catch (e) {
+      if (!(e instanceof UnlinkedUserError)) {
+        throw (e)
+      }
+    }
+  }
   return verificationLinksCollection.findOne(
     {
       discordAccountId: interaction.user.id
@@ -53,7 +67,7 @@ export default async function (interaction) {
       return updateResult
     })
     .then(updateResult => interaction.editReply({
-      content: `**Use the button below to verify your account.**\n-# :clock1: **This link expires** <t:${Math.round(expiration.getTime() / 1000)}:R>. It will be deactivated and replaced if you run this command again.${updateResult.upsertedCount === 0 ? '\n-# :no_entry_sign: **A previously generated link was deactivated when you ran this command.** You can no longer use any previously generated links to perform verification.' : ''}\n-# :warning: **This link is specific to you.** If you share it with other people, then they may be able to make changes to your verification settings.`,
+      content: `**Use the button below to verify your account.**\n${rolesAssigned ? '-# :white_check_mark: **You have been given the appropriate roles in this server based on account(s) that you have already linked.** Further verification may not be necessary for this server.\n' : ''}-# :clock1: **This link expires** <t:${Math.round(expiration.getTime() / 1000)}:R>. It will be deactivated and replaced if you run this command again.${updateResult.upsertedCount === 0 ? '\n-# :no_entry_sign: **A previously generated link was deactivated when you ran this command.** You can no longer use any previously generated links to perform verification.' : ''}\n-# :warning: **This link is specific to you.** If you share it with other people, then they may be able to make changes to your verification settings.`,
       components: [
         new ActionRowBuilder().addComponents([new ButtonBuilder()
           .setLabel('Verify account')
