@@ -36,8 +36,8 @@ importers:
         specifier: ^6.17.0
         version: 6.17.0
       nodemailer:
-        specifier: ^7.0.3
-        version: 7.0.3
+        specifier: ^7.0.5
+        version: 7.0.5
       openid-client:
         specifier: ^6.1.7
         version: 6.1.7
@@ -1037,8 +1037,8 @@ packages:
     resolution: {integrity: sha512-OSs33Z9yWr148JZcbZd5WiAXhh/n9z8TxQcdMhIOlpN9AhWpLfvVFO73+m77bBABQMaY9XSvIa+qk0jlI7Gcaw==}
     hasBin: true
 
-  nodemailer@7.0.3:
-    resolution: {integrity: sha512-Ajq6Sz1x7cIK3pN6KesGTah+1gnwMnx5gKl3piQlQQE/PwyJ4Mbc8is2psWYxK3RJTVeqsDaCv8ZzXLCDHMTZw==}
+  nodemailer@7.0.5:
+    resolution: {integrity: sha512-nsrh2lO3j4GkLLXoeEksAMgAOqxOv6QumNRVQTJwKH4nuiww6iC2y7GyANs9kRAxCexg3+lTWM3PZ91iLlVjfg==}
     engines: {node: '>=6.0.0'}
 
   oauth4webapi@3.1.4:
@@ -2598,7 +2598,7 @@ snapshots:
 
   node-gyp-build@4.8.1: {}
 
-  nodemailer@7.0.3: {}
+  nodemailer@7.0.5: {}
 
   oauth4webapi@3.1.4: {}
 
