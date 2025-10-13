@@ -27,7 +27,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.7.1",
     "mongodb": "^6.17.0",
-    "nodemailer": "^7.0.5",
+    "nodemailer": "^7.0.9",
     "openid-client": "^6.1.7",
     "utf-8-validate": "^6.0.5",
     "yaml": "^2.8.0"
