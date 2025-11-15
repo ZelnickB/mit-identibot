@@ -5,8 +5,7 @@ ENV NODE_ENV=production
 COPY . /data
 WORKDIR /data
 
-RUN corepack enable
-RUN corepack install
+RUN npm install -g pnpm@latest-10
 RUN pnpm install
 
 EXPOSE 80/tcp

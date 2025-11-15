@@ -3,7 +3,6 @@
   "version": "1.0.0-dev",
   "description": "An open-source Discord bot written in Node.js that verifies individuals' affiliations with MIT, grants them roles in a Discord server, and stores information about them in a database backend.",
   "type": "module",
-  "packageManager": "pnpm@9.1.2",
   "scripts": {
     "start": "node server.js"
   },
