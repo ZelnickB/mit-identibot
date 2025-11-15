@@ -30,7 +30,7 @@
     "nodemailer": "^7.0.10",
     "openid-client": "^6.1.7",
     "utf-8-validate": "^6.0.5",
-    "yaml": "^2.8.0"
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
