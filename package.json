@@ -19,7 +19,7 @@
   "dependencies": {
     "bufferutil": "^4.0.9",
     "cookie-parser": "^1.4.7",
-    "discord-api-types": "^0.38.33",
+    "discord-api-types": "^0.38.35",
     "discord.js": "^14.24.2",
     "express": "^5.1.0",
     "hbs": "^4.2.0",
