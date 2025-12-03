@@ -4,21 +4,27 @@ import { whoisResult } from '../../embedBuilders.js'
 import { EmbeddableError } from '../../../lib/errorBases.js'
 import { readUserConfig } from '../../../lib/configurationReaders.js'
 import { get as getIdPhoto } from '../../../lib/mitDeveloperConnection/peoplePictures.js'
+import { checkUserInServer } from '../authorization.js'
 
 export async function respond (interaction) {
+  const targetUser = interaction.options.get('user').user
   try {
-    const userInfo = await getUserInfo(interaction.options.get('user').user)
-    const kerberosInfoAvailable = userInfo.kerberos !== undefined && !(userInfo.kerberos instanceof Error)
+    await checkUserInServer(interaction, targetUser)
+  } catch (e) {
+    if (e instanceof EmbeddableError) return e.editReplyWithEmbed(interaction)
+  }
+  try {
+    const userInfo = await getUserInfo(targetUser)
     let embed
     const files = []
     if ('kerberos' in userInfo) {
       if (userInfo.kerberos instanceof EmbeddableError) return userInfo.kerberos.editReplyWithEmbed(interaction)
-      const userConfig = await readUserConfig(interaction.options.get('user').user.id)
+      const userConfig = await readUserConfig(targetUser.id)
       if (userConfig.allowIdPhotoLookup.moderator || userConfig.allowIdPhotoLookup.member) {
         files.push(new AttachmentBuilder(await getIdPhoto(userInfo.kerberos.kerberosId), { name: 'user.jpeg' }))
       }
-      embed = whoisResult(interaction.options.get('user').user.id, 'kerberos', userInfo.kerberos, files.length !== 0 ? 'attachment://user.jpeg' : undefined)
-    } else if ('admitted' in userInfo) embed = whoisResult(interaction.options.get('user').user.id, 'admitted', userInfo.admitted)
+      embed = whoisResult(targetUser.id, 'kerberos', userInfo.kerberos, files.length !== 0 ? 'attachment://user.jpeg' : undefined)
+    } else if ('admitted' in userInfo) embed = whoisResult(targetUser.id, 'admitted', userInfo.admitted)
     return interaction.editReply({
       embeds: [embed],
       files
