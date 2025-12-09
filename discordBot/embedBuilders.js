@@ -363,14 +363,8 @@ export function whoisResult (discordID, infoSource, userInfo, thumbnailURL) {
     case 'kerberos': {
       embedBuilder.addFields(
         {
-          name: 'Legal Name',
-          value: `${userInfo.familyName}, ${userInfo.givenName}${userInfo.middleName ? ' ' + userInfo.middleName : ''}`,
-          inline: true
-        },
-        {
-          name: 'Display Name',
-          value: userInfo.displayName,
-          inline: true
+          name: 'Name',
+          value: `${userInfo.familyName}, ${userInfo.givenName}${userInfo.middleName ? ' ' + userInfo.middleName : ''}`
         },
         {
           name: 'Email/Kerberos',
