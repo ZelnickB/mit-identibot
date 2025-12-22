@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/ZelnickB/mit-identibot#readme",
   "dependencies": {
-    "bufferutil": "^4.0.9",
+    "bufferutil": "^4.1.0",
     "cookie-parser": "^1.4.7",
     "discord-api-types": "^0.38.37",
     "discord.js": "^14.25.1",
